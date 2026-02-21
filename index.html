@@ -214,7 +214,6 @@ table.tx tbody tr:last-child td{border-bottom:none}
 <!-- ===== TABS ===== -->
 <div class="tabs">
     <button class="tabtn on" onclick="switchTab('abs',this)">PFS &amp; OS Estimates</button>
-    <button class="tabtn" onclick="switchTab('rat',this)">Relative Risk Profile</button>
     <button class="tabtn" onclick="switchTab('hr',this)">Hazard Ratios</button>
     <button class="tabtn" onclick="switchTab('tox',this)">Toxicity Profiles</button>
     <button class="tabtn" onclick="switchTab('tim',this)">Toxicity Timing</button>
@@ -222,7 +221,50 @@ table.tx tbody tr:last-child td{border-bottom:none}
 </div>
 
 <!-- ===== TAB 1: RATIOS ===== -->
-<div class="tpane" id="tab-rat">
+<!-- ===== TAB 2: PFS & OS ABSOLUTE ===== -->
+<div class="tpane on" id="tab-abs">
+<div id="abs-out" style="display:none">
+    <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin:0 0 4px">Estimated PFS &amp; Published OS</div>
+    <p style="font-size:12px;color:var(--s500);margin-bottom:16px">Risk-adjusted PFS estimates for patient discussions. OS data shown as published ITT trial results (not risk-adjusted).</p>
+
+    <div class="mcard mcard-top">
+        <div class="orow"><div class="oname">Osimertinib Monotherapy</div><div class="ttag">FLAURA / FLAURA2 control</div></div>
+        <div class="est-grid">
+            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-o-pfs" style="color:var(--bl6)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-o-range"></div></div>
+            <div class="est-box"><div class="est-label">Published ITT Median OS</div><div class="est-val" style="color:var(--bl6)">37.6</div><div class="est-unit">months</div><div class="est-sub">FLAURA2 control arm<br>Janne, NEJM 2025</div></div>
+        </div>
+        <div class="pfs-bar"><div class="pfs-fill f-osi" id="abs-o-bar"></div></div>
+        <div class="os-line" id="abs-o-note"></div>
+    </div>
+
+    <div class="mcard mcard-top chm">
+        <div class="orow"><div class="oname">Osimertinib + Platinum-Pemetrexed</div><div class="ttag">FLAURA2</div></div>
+        <div class="est-grid">
+            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-c-pfs" style="color:var(--tl6)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-c-range"></div></div>
+            <div class="est-box"><div class="est-label">Published ITT Median OS</div><div class="est-val" style="color:var(--tl6)">47.5</div><div class="est-unit">months</div><div class="est-sub">HR 0.77 (p=0.02) vs osi mono<br>Janne, NEJM 2025</div></div>
+        </div>
+        <div class="pfs-bar"><div class="pfs-fill f-chm" id="abs-c-bar"></div></div>
+        <div class="os-line" id="abs-c-note"></div>
+    </div>
+
+    <div class="mcard mcard-top ami">
+        <div class="orow"><div class="oname">Amivantamab + Lazertinib</div><div class="ttag">MARIPOSA</div></div>
+        <div class="est-grid">
+            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-a-pfs" style="color:var(--ind)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-a-range"></div></div>
+            <div class="est-box"><div class="est-label">Published OS</div><div class="est-val" style="color:var(--ind);font-size:24px">3-yr: 60%</div><div class="est-unit">vs 51% osi mono</div><div class="est-sub">HR 0.75 (p=0.005)<br>Yang, NEJM 2025</div></div>
+        </div>
+        <div class="pfs-bar"><div class="pfs-fill f-ami" id="abs-a-bar"></div></div>
+        <div class="os-line" id="abs-a-note"></div>
+    </div>
+</div>
+<div class="ph" id="abs-out-ph">Select prognostic variables above and calculate to see PFS &amp; OS estimates.</div>
+
+<div class="limb"><strong>&#9888; Important Caveats for Patient Discussions</strong>PFS estimates are derived from subgroup analyses and reflect population-level associations, not individual predictions. Actual PFS for any individual patient may differ substantially. OS data shown are ITT trial results and are not risk-adjusted (subgroup-specific OS data are limited). Month ranges represent plausible intervals around point estimates, not confidence intervals. Use as a framework for discussion, not as a prognosis.</div>
+</div>
+
+<!-- ===== TAB 3: HAZARD RATIOS ===== -->
+<div class="tpane" id="tab-hr">
+
 <div id="outsec" style="display:none">
     <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin:0 0 12px">Expected PFS Relative to Trial Population</div>
 
@@ -267,57 +309,13 @@ table.tx tbody tr:last-child td{border-bottom:none}
         <strong>How to interpret the gain metric:</strong> The ITT-level treatment effect of combination over monotherapy is ~1.35&times; for osi+chemo (25.5/18.9) and ~1.25&times; for amiva+lazer (23.7/18.9). This <em>baseline gain</em> applies to all patients regardless of risk. When the displayed gain <em>exceeds</em> this baseline, it indicates the combination is disproportionately benefiting this risk profile by overcoming adverse prognostic factors. For high-risk patients, gains of 1.5&ndash;1.6&times; suggest combination therapy substantially mitigates their poor-prognosis biology. For favorable-risk patients, gains near the baseline (~1.25&ndash;1.35&times;) suggest the benefit is primarily the general treatment effect, which must be weighed against added toxicity.
     </div>
 </div>
-<div class="ph" id="outsec-ph">Select prognostic variables above and calculate to see ratio-based outcomes.</div>
+<div class="ph" id="outsec-ph">Select prognostic variables above and calculate to see relative risk profile.</div>
 
-<div class="mbox" style="margin-top:16px">
+<div class="mbox" style="margin:16px 0 24px">
     <strong>Methodology &mdash; Ratio-Referenced Estimates</strong><br>
     Efficacy expressed as fold-change (&times;) relative to each trial&rsquo;s ITT median PFS, derived from published subgroup HRs and medians. Ratios &lt;1.0&times; = shorter expected PFS. Correlated factors grouped into <em>Metastatic Burden</em> (brain/liver) and <em>Molecular Risk</em> (TP53, ctDNA) domains to mitigate collinearity. Gain-vs-mono metric shows potential PFS extension from escalating to combination therapy for each risk profile.
 </div>
-</div>
 
-<!-- ===== TAB 2: PFS & OS ABSOLUTE ===== -->
-<div class="tpane on" id="tab-abs">
-<div id="abs-out" style="display:none">
-    <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin:0 0 4px">Estimated PFS &amp; Published OS</div>
-    <p style="font-size:12px;color:var(--s500);margin-bottom:16px">Risk-adjusted PFS estimates for patient discussions. OS data shown as published ITT trial results (not risk-adjusted).</p>
-
-    <div class="mcard mcard-top">
-        <div class="orow"><div class="oname">Osimertinib Monotherapy</div><div class="ttag">FLAURA / FLAURA2 control</div></div>
-        <div class="est-grid">
-            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-o-pfs" style="color:var(--bl6)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-o-range"></div></div>
-            <div class="est-box"><div class="est-label">Published ITT Median OS</div><div class="est-val" style="color:var(--bl6)">37.6</div><div class="est-unit">months</div><div class="est-sub">FLAURA2 control arm<br>Janne, NEJM 2025</div></div>
-        </div>
-        <div class="pfs-bar"><div class="pfs-fill f-osi" id="abs-o-bar"></div></div>
-        <div class="os-line" id="abs-o-note"></div>
-    </div>
-
-    <div class="mcard mcard-top chm">
-        <div class="orow"><div class="oname">Osimertinib + Platinum-Pemetrexed</div><div class="ttag">FLAURA2</div></div>
-        <div class="est-grid">
-            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-c-pfs" style="color:var(--tl6)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-c-range"></div></div>
-            <div class="est-box"><div class="est-label">Published ITT Median OS</div><div class="est-val" style="color:var(--tl6)">47.5</div><div class="est-unit">months</div><div class="est-sub">HR 0.77 (p=0.02) vs osi mono<br>Janne, NEJM 2025</div></div>
-        </div>
-        <div class="pfs-bar"><div class="pfs-fill f-chm" id="abs-c-bar"></div></div>
-        <div class="os-line" id="abs-c-note"></div>
-    </div>
-
-    <div class="mcard mcard-top ami">
-        <div class="orow"><div class="oname">Amivantamab + Lazertinib</div><div class="ttag">MARIPOSA</div></div>
-        <div class="est-grid">
-            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-a-pfs" style="color:var(--ind)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-a-range"></div></div>
-            <div class="est-box"><div class="est-label">Published OS</div><div class="est-val" style="color:var(--ind);font-size:24px">3-yr: 60%</div><div class="est-unit">vs 51% osi mono</div><div class="est-sub">HR 0.75 (p=0.005)<br>Yang, NEJM 2025</div></div>
-        </div>
-        <div class="pfs-bar"><div class="pfs-fill f-ami" id="abs-a-bar"></div></div>
-        <div class="os-line" id="abs-a-note"></div>
-    </div>
-</div>
-<div class="ph" id="abs-out-ph">Select prognostic variables above and calculate to see PFS &amp; OS estimates.</div>
-
-<div class="limb"><strong>&#9888; Important Caveats for Patient Discussions</strong>PFS estimates are derived from subgroup analyses and reflect population-level associations, not individual predictions. Actual PFS for any individual patient may differ substantially. OS data shown are ITT trial results and are not risk-adjusted (subgroup-specific OS data are limited). Month ranges represent plausible intervals around point estimates, not confidence intervals. Use as a framework for discussion, not as a prognosis.</div>
-</div>
-
-<!-- ===== TAB 3: HAZARD RATIOS ===== -->
-<div class="tpane" id="tab-hr">
 <div class="card"><div class="card-h"><h2>Published PFS Hazard Ratios &mdash; Combination vs Osimertinib</h2><p>Pivotal trial results and key subgroup analyses. HR &lt;1.0 favors combination.</p></div>
 <div class="card-b">
 <table class="hr-tbl"><thead><tr>
