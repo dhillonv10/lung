@@ -95,7 +95,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--s100);color:var(--s800);l
 .est-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--s500);margin-bottom:4px}
 .est-val{font-family:'Fraunces',serif;font-size:32px;font-weight:800;line-height:1}
 .est-unit{font-size:13px;color:var(--s500);margin-top:2px}
-.est-sub{font-size:11px;color:var(--s400);margin-top:4px}
+.est-sub{font-size:11px;color:var(--s400);margin-top:4px;font-weight:600}
 .pfs-bar{height:24px;background:var(--s100);border-radius:6px;position:relative;margin:8px 0}
 .pfs-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:600;color:#fff;transition:width .6s ease}
 .pfs-fill.f-osi{background:linear-gradient(90deg,var(--bl),var(--bl6))}
@@ -169,8 +169,8 @@ table.tx tbody tr:last-child td{border-bottom:none}
 <body>
 <div class="wrap">
 <div class="hdr">
-    <h1>EGFR-Mutant NSCLC Clinical Decision Tool</h1>
-    <p>Dual-audience clinical decision support: ratio-based risk stratification for precision oncology, absolute PFS/OS estimates for patient discussions, and comparative toxicity profiles.</p>
+    <h1><italicize>EGFR</italicize>-Mutant NSCLC Clinical Decision Tool</h1>
+    <p>Clinical decision support: Ratio-based risk stratification for precision oncology, absolute PFS/OS estimates for patient discussions, and comparative toxicity profiles.</p>
 </div>
 
 <!-- ===== CALCULATOR (always visible) ===== -->
@@ -178,7 +178,7 @@ table.tx tbody tr:last-child td{border-bottom:none}
     <div class="calc-h"><h2>Prognostic Variables</h2><span class="calctog" onclick="var b=document.getElementById('calcb');b.style.display=b.style.display==='none'?'block':'none';this.textContent=b.style.display==='none'?'▸ Show':'▾ Hide'">&#9662; Hide</span></div>
     <div class="calc-b" id="calcb">
         <div class="calc-grid">
-            <div class="fg"><span class="fl">EGFR Mutation Type</span><div class="rg">
+            <div class="fg"><span class="fl"><i>EGFR</i> Mutation Type</span><div class="rg">
                 <div class="ro"><input type="radio" id="e1" name="egfr" value="ex19del" checked><label for="e1">Exon 19 Deletion</label></div>
                 <div class="ro"><input type="radio" id="e2" name="egfr" value="l858r"><label for="e2">L858R (Exon 21)</label></div>
             </div></div>
@@ -195,7 +195,7 @@ table.tx tbody tr:last-child td{border-bottom:none}
                 <div class="ro"><input type="radio" id="c2" name="ctdna" value="undetectable"><label for="c2">Undetectable</label></div>
                 <div class="ro"><input type="radio" id="c3" name="ctdna" value="detectable"><label for="c3">Detectable</label></div>
             </div></div>
-            <div class="fg"><span class="fl">TP53 Co-mutation</span><div class="rg">
+            <div class="fg"><span class="fl"><i>TP53</i> Comutation</span><div class="rg">
                 <div class="ro"><input type="radio" id="t1" name="tp53" value="unknown" checked><label for="t1">Unknown</label></div>
                 <div class="ro"><input type="radio" id="t2" name="tp53" value="absent"><label for="t2">Absent</label></div>
                 <div class="ro"><input type="radio" id="t3" name="tp53" value="present"><label for="t3">Present</label></div>
@@ -313,7 +313,12 @@ table.tx tbody tr:last-child td{border-bottom:none}
 
 <div class="mbox" style="margin:16px 0 24px">
     <strong>Methodology &mdash; Ratio-Referenced Estimates</strong><br>
-    Efficacy expressed as fold-change (&times;) relative to each trial&rsquo;s ITT median PFS, derived from published subgroup HRs and medians. Ratios &lt;1.0&times; = shorter expected PFS. Correlated factors grouped into <em>Metastatic Burden</em> (brain/liver) and <em>Molecular Risk</em> (TP53, ctDNA) domains to mitigate collinearity. Gain-vs-mono metric shows potential PFS extension from escalating to combination therapy for each risk profile.
+    Efficacy expressed as fold-change (&times;) relative to each trial&rsquo;s ITT median PFS, derived from published subgroup HRs and medians. Ratios &lt;1.0&times; = shorter expected PFS. Correlated factors grouped into <em>Metastatic Burden</em> (brain/liver) and <em>Molecular Risk</em> (<i>TP53</i>, ctDNA) domains to mitigate collinearity. Gain-vs-mono metric shows potential PFS extension from escalating to combination therapy for each risk profile.
+</div>
+
+<div id="hr-context" style="display:none">
+<div class="card" style="margin-bottom:20px"><div class="card-h"><h2>HRs in Context for This Risk Profile</h2></div>
+<div class="card-b" id="hr-context-body" style="font-size:13px;color:var(--s600);line-height:1.8"></div></div>
 </div>
 
 <div class="card"><div class="card-h"><h2>Published PFS Hazard Ratios &mdash; Combination vs Osimertinib</h2><p>Pivotal trial results and key subgroup analyses. HR &lt;1.0 favors combination.</p></div>
@@ -330,8 +335,8 @@ table.tx tbody tr:last-child td{border-bottom:none}
 <tr><td>Brain mets at baseline</td><td><span class="hr-val">0.47</span><span class="hr-ci">(CNS PFS)</span></td><td><span class="hr-val">0.69</span></td></tr>
 <tr><td>No brain mets</td><td><span class="hr-val">0.68</span></td><td><span class="hr-val">0.70</span></td></tr>
 <tr><td>Liver mets at baseline</td><td><span class="hr-val">~0.60</span></td><td><span class="hr-val">~0.57</span></td></tr>
-<tr><td>TP53 co-mutation</td><td><span class="hr-val">~0.55</span><span class="hr-ci">(limited data)</span></td><td><span class="hr-sig">0.65</span><span class="hr-ci">Felip, Ann Oncol 2024</span></td></tr>
-<tr><td>TP53 wild-type</td><td><span class="hr-val">~0.70</span></td><td><span class="hr-val">~0.75</span></td></tr>
+<tr><td><i>TP53</i> comutation</td><td><span class="hr-val">~0.55</span><span class="hr-ci">(limited data)</span></td><td><span class="hr-sig">0.65</span><span class="hr-ci">Felip, Ann Oncol 2024</span></td></tr>
+<tr><td><i>TP53</i> wild-type</td><td><span class="hr-val">~0.70</span></td><td><span class="hr-val">~0.75</span></td></tr>
 <tr><td>ctDNA detectable</td><td><span class="hr-val">~0.55</span></td><td><span class="hr-val">~0.60</span></td></tr>
 <tr><td>ctDNA undetectable</td><td><span class="hr-val">~0.80</span></td><td><span class="hr-val">~0.85</span></td></tr>
 </tbody></table>
@@ -350,11 +355,6 @@ table.tx tbody tr:last-child td{border-bottom:none}
 <tr><td>Median OS &mdash; osi control</td><td><span class="hr-val">37.6 months</span></td><td><span class="hr-val">3-yr OS 51%</span></td></tr>
 </tbody></table>
 </div></div>
-
-<div id="hr-context" style="display:none">
-<div class="card"><div class="card-h"><h2>HRs in Context for This Risk Profile</h2></div>
-<div class="card-b" id="hr-context-body" style="font-size:13px;color:var(--s600);line-height:1.8"></div></div>
-</div>
 
 <div class="mbox" style="margin-top:0">
     <strong>Reading This Table</strong><br>
@@ -552,9 +552,9 @@ function calc(){
     if(brain)tags.push({t:'Brain mets',c:'neg'});
     if(liver)tags.push({t:'Liver mets',c:'neg'});
     if(!brain&&!liver)tags.push({t:'No visceral mets',c:'pos'});
-    if(tp53==='present')tags.push({t:'TP53 mutant',c:'neg'});
-    else if(tp53==='absent')tags.push({t:'TP53 wild-type',c:'pos'});
-    else tags.push({t:'TP53 unknown',c:'neu'});
+    if(tp53==='present')tags.push({t:'<i>TP53</i> mutant',c:'neg'});
+    else if(tp53==='absent')tags.push({t:'<i>TP53</i> wild-type',c:'pos'});
+    else tags.push({t:'<i>TP53</i> unknown',c:'neu'});
     if(ctdna==='detectable')tags.push({t:'ctDNA detectable',c:'neg'});
     else if(ctdna==='undetectable')tags.push({t:'ctDNA undetectable',c:'pos'});
     else tags.push({t:'ctDNA unknown',c:'neu'});
@@ -646,14 +646,14 @@ function calc(){
     var on='ITT median: 18.9 mo.';
     if(!ex)on+=' L858R: shorter PFS vs Ex19del across trials.';
     if(liver)on+=' Liver mets subgroup: ~0.58\u00d7 (Felip, Ann Oncol 2024).';
-    if(tp53==='present')on+=' TP53 subgroup: ~0.68\u00d7.';
+    if(tp53==='present')on+=' <i>TP53</i> subgroup: ~0.68\u00d7.';
     if(ctdna==='detectable')on+=' ctDNA detectable: ~0.78\u00d7.';
     document.getElementById('onote').textContent=on;
     var cn='ITT median: 25.5 mo. Final OS: 47.5 vs 37.6 mo (HR 0.77, p=0.02).';
     if(brain)cn+=' CNS PFS: HR 0.47.';
     document.getElementById('cnote').textContent=cn;
     var an='ITT median: 23.7 mo. OS: HR 0.75 (p=0.005); 3-yr OS 60% vs 51%.';
-    if(tp53==='present')an+=' TP53: PFS HR 0.65.';
+    if(tp53==='present')an+=' <i>TP53</i>: PFS HR 0.65.';
     if(liver)an+=' Liver mets: significant PFS benefit.';
     document.getElementById('anote').textContent=an;
 
@@ -684,17 +684,17 @@ function calc(){
     if(brain)cOsNote+=' CNS disease: strongest intracranial PFS benefit (HR 0.47) may translate to OS gain.';
     document.getElementById('abs-c-note').textContent=cOsNote;
     var aOsNote='Published OS: HR 0.75 (p=0.005) vs osi mono. 3-year OS: 60% vs 51%.';
-    if(tp53==='present')aOsNote+=' TP53 mutant: PFS HR 0.65 suggests substantial benefit in this subgroup.';
+    if(tp53==='present')aOsNote+=' <i>TP53</i> mutant: PFS HR 0.65 suggests substantial benefit in this subgroup.';
     document.getElementById('abs-a-note').textContent=aOsNote;
 
     // === UPDATE TAB 3: HR CONTEXT ===
     var hctx=document.getElementById('hr-context');
     var hbody=document.getElementById('hr-context-body');
     hctx.style.display='block';
-    var htxt='<strong style="color:var(--s800)">For this '+rc.toLowerCase()+' profile ('+egfr+(brain?' + brain mets':'')+(liver?' + liver mets':'')+(tp53==='present'?' + TP53':'')+(ctdna==='detectable'?' + ctDNA detectable':'')+'):</strong><br><br>';
+    var htxt='<strong style="color:var(--s800)">For this '+rc.toLowerCase()+' profile ('+egfr+(brain?' + brain mets':'')+(liver?' + liver mets':'')+(tp53==='present'?' + <i>TP53</i>':'')+(ctdna==='detectable'?' + ctDNA detectable':'')+'):</strong><br><br>';
     if(brain)htxt+='Brain mets subgroup PFS HR for osi+chemo: <strong>0.47</strong> (CNS PFS) &mdash; the largest subgroup benefit observed in FLAURA2, suggesting combinations substantially improve intracranial disease control.<br><br>';
     if(liver)htxt+='Liver mets subgroup: both combinations show substantial PFS benefit (HRs ~0.57&ndash;0.60), suggesting combinations partially overcome the poor prognosis associated with hepatic metastases.<br><br>';
-    if(tp53==='present')htxt+='TP53 co-mutation: amiva+lazer shows PFS HR <strong>0.65</strong> (Felip, Ann Oncol 2024). TP53 mutations drive genomic instability and resistance; dual-pathway inhibition may overcome this biology.<br><br>';
+    if(tp53==='present')htxt+='<i>TP53</i> comutation: amiva+lazer shows PFS HR <strong>0.65</strong> (Felip, Ann Oncol 2024). <i>TP53</i> mutations drive genomic instability and resistance; dual-pathway inhibition may overcome this biology.<br><br>';
     if(ctdna==='detectable')htxt+='Detectable ctDNA: both combinations show enhanced benefit (HRs ~0.55&ndash;0.60) in patients with higher tumor burden as reflected by circulating DNA.<br><br>';
     if(rc==='FAVORABLE')htxt+='Favorable-risk patients: subgroup HRs for combinations tend to be attenuated (closer to 1.0) compared to ITT, suggesting the absolute benefit of escalation is smaller when baseline prognosis is already good.';
     htxt+='<br><em style="color:var(--s400)">Subgroup HRs are exploratory and may not be powered for statistical significance. Interpret with caution.</em>';
