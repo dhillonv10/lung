@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EGFR-Mutant NSCLC Clinical Decision Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--s50:#f8fafc;--s100:#f1f5f9;--s200:#e2e8f0;--s300:#cbd5e1;--s400:#94a3b8;--s500:#64748b;--s600:#475569;--s700:#334155;--s800:#1e293b;--s900:#0f172a;--bl:#3b82f6;--bl6:#2563eb;--tl:#14b8a6;--tl6:#0d9488;--ind:#6366f1;--vi:#7c3aed}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--s100);color:var(--s800);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1340px;margin:0 auto;padding:24px 20px 60px}
+.hdr{background:var(--s900);color:#fff;padding:36px 40px;border-radius:16px;margin-bottom:24px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:-60%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);pointer-events:none}
+.hdr h1{font-family:'Fraunces',serif;font-size:clamp(22px,3vw,28px);font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.hdr p{opacity:.7;font-size:14px;max-width:720px}
+.badge{display:inline-block;background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.3);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;color:#a5b4fc;margin-bottom:12px;letter-spacing:.5px}
+/* Calculator */
+.calc-panel{background:#fff;border:1px solid var(--s200);border-radius:14px;margin-bottom:20px;overflow:hidden}
+.calc-h{padding:18px 24px 14px;border-bottom:1px solid var(--s100);display:flex;justify-content:space-between;align-items:center}
+.calc-h h2{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--s900)}
+.calc-h .calctog{font-size:12px;color:var(--s500);cursor:pointer;user-select:none;display:flex;align-items:center;gap:4px}
+.calc-b{padding:20px 24px 24px}
+.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px 24px}
+.fg{margin-bottom:0}.fl{display:block;font-weight:600;font-size:12px;color:var(--s700);margin-bottom:6px}
+.rg{display:flex;flex-direction:column;gap:4px}
+.ro{display:flex;align-items:center;padding:8px 12px;background:var(--s50);border:1.5px solid var(--s200);border-radius:8px;cursor:pointer;transition:all .15s;font-size:12px}
+.ro:hover{border-color:var(--s300);background:#fff}
+.ro input[type=radio]{width:14px;height:14px;margin-right:8px;cursor:pointer;accent-color:var(--ind)}
+.ro label{margin:0;cursor:pointer;flex:1;font-weight:500;color:var(--s700)}
+.btn1{padding:14px 32px;background:var(--s900);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn1:hover{background:var(--s700);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.btn-row{grid-column:1/-1;display:flex;justify-content:center;padding-top:8px}
+/* Risk banner (shown above tabs after calc) */
+.rban{padding:20px 24px;border-radius:12px;margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;transition:all .3s}
+.rban.fav{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:1.5px solid #a7f3d0}
+.rban.mid{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #fde68a}
+.rban.hi{background:linear-gradient(135deg,#fff1f2,#ffe4e6);border:1.5px solid #fecdd3}
+.rban.def{background:var(--s50);border:1.5px solid var(--s200)}
+.rban-main{flex-shrink:0}
+.rlbl{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;opacity:.7;margin-bottom:2px}
+.rcat{font-family:'Fraunces',serif;font-size:24px;font-weight:800;letter-spacing:-.5px}
+.rsub{font-size:12px;opacity:.7;margin-top:2px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.tag.neg{background:#ffe4e6;color:#9f1239}.tag.pos{background:#dcfce7;color:#166534}.tag.neu{background:var(--s100);color:var(--s600)}
+.tag .dot{width:5px;height:5px;border-radius:50%}
+.tag.neg .dot{background:#f43f5e}.tag.pos .dot{background:#14b8a6}.tag.neu .dot{background:var(--s400)}
+/* Tabs */
+.tabs{display:flex;gap:3px;background:var(--s200);padding:3px;border-radius:10px;margin-bottom:20px;flex-wrap:wrap}
+.tabtn{flex:1;padding:10px 12px;border:none;background:0 0;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--s500);cursor:pointer;transition:all .2s;min-width:110px;text-align:center;white-space:nowrap}
+.tabtn:hover{color:var(--s700)}.tabtn.on{background:#fff;color:var(--s900);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.tpane{display:none}.tpane.on{display:block}
+/* Cards */
+.card{background:#fff;border-radius:14px;border:1px solid var(--s200);overflow:hidden;margin-bottom:20px}
+.card-h{padding:18px 24px 14px;border-bottom:1px solid var(--s100)}
+.card-h h2{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--s900)}
+.card-h p{font-size:12px;color:var(--s500);margin-top:3px}
+.card-b{padding:20px 24px 24px}
+/* Outcome cards (ratio) */
+.ocard{background:var(--s50);border:1px solid var(--s200);border-radius:12px;padding:20px;margin-bottom:16px}
+.orow{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.oname{font-weight:600;font-size:15px;color:var(--s800)}
+.ttag{font-size:11px;font-weight:600;padding:3px 10px;border-radius:6px;background:var(--s200);color:var(--s600)}
+.ref-line{font-size:12px;color:var(--s500);margin-bottom:8px}
+.ref-line strong{color:var(--s700)}
+.ratio-row{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.ratio-val{font-family:'Fraunces',serif;font-size:30px;font-weight:800;line-height:1}
+.ratio-suf{font-size:13px;font-weight:600;color:var(--s500)}
+.ratio-interp{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;margin-top:4px}
+.ri-fav{background:#dcfce7;color:#166534}.ri-mod{background:#fef3c7;color:#92400e}.ri-poor{background:#ffe4e6;color:#9f1239}
+.ratio-bar-wrap{height:8px;background:var(--s200);border-radius:4px;margin:12px 0;position:relative;overflow:visible}
+.ratio-bar-ref{position:absolute;top:-4px;height:16px;width:2px;background:var(--s400);border-radius:1px;z-index:2}
+.ratio-bar-ref-label{position:absolute;top:-18px;font-size:9px;color:var(--s400);white-space:nowrap;transform:translateX(-50%)}
+.ratio-bar{height:100%;border-radius:4px;transition:width .6s ease;width:0}
+.rb-osi{background:linear-gradient(90deg,var(--bl),var(--bl6))}
+.rb-chm{background:linear-gradient(90deg,var(--tl),var(--tl6))}
+.rb-ami{background:linear-gradient(90deg,var(--ind),var(--vi))}
+.gain-box{margin-top:12px;padding:12px 16px;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1.5px solid #bae6fd;border-radius:10px}
+.gain-header{font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:#0369a1;margin-bottom:4px}
+.gain-row{display:flex;align-items:baseline;gap:10px}
+.gain-val{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:#0c4a6e}
+.gain-suf{font-size:12px;font-weight:600;color:#0369a1}
+.gain-interp{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;margin-top:4px}
+.gi-high{background:#dbeafe;color:#1e40af}.gi-mod{background:#e0f2fe;color:#0369a1}.gi-low{background:#f0f9ff;color:#0c4a6e}
+.onote{font-size:11px;color:var(--s500);padding-top:8px;border-top:1px solid var(--s200);margin-top:10px;line-height:1.6}
+/* Absolute months cards (Tab 2) */
+.mcard{background:#fff;border:1px solid var(--s200);border-radius:12px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.mcard-top{border-top:3px solid var(--bl)}
+.mcard-top.chm{border-top-color:var(--tl)}
+.mcard-top.ami{border-top-color:var(--ind)}
+.mcard .orow{margin-bottom:12px}
+.est-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.est-box{background:var(--s50);border-radius:10px;padding:16px;text-align:center}
+.est-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--s500);margin-bottom:4px}
+.est-val{font-family:'Fraunces',serif;font-size:32px;font-weight:800;line-height:1}
+.est-unit{font-size:13px;color:var(--s500);margin-top:2px}
+.est-sub{font-size:11px;color:var(--s400);margin-top:4px}
+.pfs-bar{height:24px;background:var(--s100);border-radius:6px;position:relative;margin:8px 0}
+.pfs-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:600;color:#fff;transition:width .6s ease}
+.pfs-fill.f-osi{background:linear-gradient(90deg,var(--bl),var(--bl6))}
+.pfs-fill.f-chm{background:linear-gradient(90deg,var(--tl),var(--tl6))}
+.pfs-fill.f-ami{background:linear-gradient(90deg,var(--ind),var(--vi))}
+.os-line{font-size:12px;color:var(--s600);line-height:1.6;margin-top:8px}
+/* Baseline gain note */
+.baseline-note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;font-size:11px;color:#1e40af;line-height:1.7;margin-top:16px}
+.baseline-note strong{color:#1e3a5f}
+/* HR table */
+.hr-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px}
+.hr-tbl thead th{background:var(--s800);color:#fff;padding:10px 14px;text-align:center;font-size:12px;font-weight:600}
+.hr-tbl thead th:first-child{text-align:left;border-radius:8px 0 0 0}
+.hr-tbl thead th:last-child{border-radius:0 8px 0 0}
+.hr-tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--s100);text-align:center;vertical-align:top}
+.hr-tbl tbody td:first-child{text-align:left;font-weight:600;color:var(--s800)}
+.hr-tbl tbody tr:last-child td{border-bottom:none}
+.hr-tbl tbody tr:hover{background:var(--s50)}
+.hr-val{font-weight:700;color:var(--s800)}.hr-ci{font-size:10px;color:var(--s400);display:block}.hr-p{font-size:10px;color:var(--s500)}
+.hr-sig{background:#dcfce7;color:#166534;font-weight:700;padding:2px 6px;border-radius:4px}
+.hr-ns{color:var(--s400);font-style:italic}
+/* Toxicity tables */
+.tov{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:900px){.tov,.pgrid,.est-grid{grid-template-columns:1fr !important}}
+.tsc{background:#fff;border:1px solid var(--s200);border-radius:14px;padding:24px 20px;text-align:center}
+.tsc .rn{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:2px}
+.tsc .src{font-size:11px;color:var(--s500);margin-bottom:16px}
+.tbig{font-family:'Fraunces',serif;font-size:38px;font-weight:800}
+.tbla{font-size:12px;color:var(--s500);margin-bottom:12px}
+.tmini{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.tmini>div{background:var(--s50);border-radius:8px;padding:6px 10px;font-size:11px}
+.tmini .v{font-weight:700;color:var(--s800)}.tmini .l{color:var(--s500)}
+.tc-o{border-top:3px solid var(--bl)}.tc-c{border-top:3px solid var(--tl)}.tc-a{border-top:3px solid var(--ind)}
+.tc-o .tbig{color:var(--bl6)}.tc-c .tbig{color:var(--tl6)}.tc-a .tbig{color:var(--ind)}
+.tdh{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--s900);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--s200)}
+.txsec{margin-bottom:28px}
+table.tx{width:100%;border-collapse:collapse;font-size:13px}
+table.tx thead th{background:var(--s50);padding:10px 14px;text-align:left;font-weight:600;font-size:12px;color:var(--s600);border-bottom:1px solid var(--s200)}
+table.tx thead th:not(:first-child){text-align:center}
+table.tx tbody td{padding:10px 14px;border-bottom:1px solid var(--s100);vertical-align:top}
+table.tx tbody td:not(:first-child){text-align:center}
+table.tx tbody tr:last-child td{border-bottom:none}
+.ae{font-weight:600;color:var(--s800)}
+.rxb{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.rxb.lo{background:#f0fdf4;color:#166534}.rxb.mo{background:#fefce8;color:#854d0e}.rxb.ho{background:#fff1f2;color:#9f1239}.rxb.na{background:var(--s100);color:var(--s400);font-style:italic}
+.g3{display:block;font-size:11px;color:var(--s400);margin-top:2px}
+/* Timing */
+.tmrow{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.tmlbl{width:100px;font-size:11px;font-weight:600;color:var(--s600);text-align:right;flex-shrink:0}
+.tmtrk{flex:1;height:22px;background:var(--s100);border-radius:4px;position:relative;overflow:hidden}
+.tmfill{position:absolute;top:0;height:100%;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;white-space:nowrap}
+.tmaxis{display:flex;margin-left:112px;font-size:10px;color:var(--s400)}.tmaxis span{flex:1;text-align:center}
+/* Practical */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pcard{background:#fff;border:1px solid var(--s200);border-radius:12px;padding:20px}
+.pcard h4{font-family:'Fraunces',serif;font-size:14px;font-weight:700;margin-bottom:12px;color:var(--s800)}
+.pitem{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12px;color:var(--s600);line-height:1.5}
+.picon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px}
+.iw{background:#fef3c7;color:#d97706}.ixi{background:#e0e7ff;color:#4f46e5}.ig{background:#dcfce7;color:#16a34a}
+/* Shared */
+.mbox{background:var(--s50);border:1px solid var(--s200);border-radius:10px;padding:14px 16px;font-size:11px;color:var(--s600);line-height:1.7}
+.mbox strong{color:var(--s800)}
+.limb{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;font-size:11px;color:#854d0e;line-height:1.7;margin-top:20px}
+.limb strong{color:#713f12;display:block;margin-bottom:3px}
+.srcbox{background:var(--s50);border:1px solid var(--s200);border-radius:10px;padding:14px 16px;font-size:11px;color:var(--s500);line-height:1.8;margin-top:20px}
+.srcbox strong{color:var(--s700);display:block;margin-bottom:3px}
+.srcbox .sl{font-size:10px;color:var(--s400);font-weight:400}
+.ph{font-size:13px;color:var(--s400);text-align:center;padding:40px 20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="hdr">
+    <h1>EGFR-Mutant NSCLC Clinical Decision Tool</h1>
+    <p>Dual-audience clinical decision support: ratio-based risk stratification for precision oncology, absolute PFS/OS estimates for patient discussions, and comparative toxicity profiles.</p>
+</div>
+
+<!-- ===== CALCULATOR (always visible) ===== -->
+<div class="calc-panel">
+    <div class="calc-h"><h2>Prognostic Variables</h2><span class="calctog" onclick="var b=document.getElementById('calcb');b.style.display=b.style.display==='none'?'block':'none';this.textContent=b.style.display==='none'?'▸ Show':'▾ Hide'">&#9662; Hide</span></div>
+    <div class="calc-b" id="calcb">
+        <div class="calc-grid">
+            <div class="fg"><span class="fl">EGFR Mutation Type</span><div class="rg">
+                <div class="ro"><input type="radio" id="e1" name="egfr" value="ex19del" checked><label for="e1">Exon 19 Deletion</label></div>
+                <div class="ro"><input type="radio" id="e2" name="egfr" value="l858r"><label for="e2">L858R (Exon 21)</label></div>
+            </div></div>
+            <div class="fg"><span class="fl">Brain Metastases</span><div class="rg">
+                <div class="ro"><input type="radio" id="b1" name="brain" value="no" checked><label for="b1">Absent</label></div>
+                <div class="ro"><input type="radio" id="b2" name="brain" value="yes"><label for="b2">Present</label></div>
+            </div></div>
+            <div class="fg"><span class="fl">Liver Metastases</span><div class="rg">
+                <div class="ro"><input type="radio" id="v1" name="liver" value="no" checked><label for="v1">Absent</label></div>
+                <div class="ro"><input type="radio" id="v2" name="liver" value="yes"><label for="v2">Present</label></div>
+            </div></div>
+            <div class="fg"><span class="fl">Baseline ctDNA</span><div class="rg">
+                <div class="ro"><input type="radio" id="c1" name="ctdna" value="unknown" checked><label for="c1">Unknown</label></div>
+                <div class="ro"><input type="radio" id="c2" name="ctdna" value="undetectable"><label for="c2">Undetectable</label></div>
+                <div class="ro"><input type="radio" id="c3" name="ctdna" value="detectable"><label for="c3">Detectable</label></div>
+            </div></div>
+            <div class="fg"><span class="fl">TP53 Co-mutation</span><div class="rg">
+                <div class="ro"><input type="radio" id="t1" name="tp53" value="unknown" checked><label for="t1">Unknown</label></div>
+                <div class="ro"><input type="radio" id="t2" name="tp53" value="absent"><label for="t2">Absent</label></div>
+                <div class="ro"><input type="radio" id="t3" name="tp53" value="present"><label for="t3">Present</label></div>
+            </div></div>
+            <div class="btn-row"><button class="btn1" onclick="calc()">Calculate Risk &amp; Outcomes</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Risk banner -->
+<div class="rban def" id="rbanner">
+    <div class="rban-main"><div class="rlbl">RISK CATEGORY</div><div class="rcat" id="rcat">Select variables &amp; calculate</div><div class="rsub" id="rsub">Domain-based stratification</div></div>
+    <div class="tags" id="dtags"></div>
+</div>
+
+<!-- ===== TABS ===== -->
+<div class="tabs">
+    <button class="tabtn on" onclick="switchTab('abs',this)">PFS &amp; OS Estimates</button>
+    <button class="tabtn" onclick="switchTab('rat',this)">Relative Risk Profile</button>
+    <button class="tabtn" onclick="switchTab('hr',this)">Hazard Ratios</button>
+    <button class="tabtn" onclick="switchTab('tox',this)">Toxicity Profiles</button>
+    <button class="tabtn" onclick="switchTab('tim',this)">Toxicity Timing</button>
+    <button class="tabtn" onclick="switchTab('pra',this)">Practical</button>
+</div>
+
+<!-- ===== TAB 1: RATIOS ===== -->
+<div class="tpane" id="tab-rat">
+<div id="outsec" style="display:none">
+    <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin:0 0 12px">Expected PFS Relative to Trial Population</div>
+
+    <div class="ocard">
+        <div class="orow"><div class="oname">Osimertinib Monotherapy</div><div class="ttag">FLAURA</div></div>
+        <div class="ref-line">Reference ITT median PFS: <strong>18.9 months</strong></div>
+        <div class="ratio-row"><div class="ratio-val" id="o-ratio" style="color:var(--bl6)">--</div><div class="ratio-suf">&times; trial median</div></div>
+        <div id="o-interp"></div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:53%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-osi" id="obar"></div></div>
+        <div class="onote" id="onote"></div>
+    </div>
+
+    <div class="ocard">
+        <div class="orow"><div class="oname">Osimertinib + Platinum-Pemetrexed</div><div class="ttag">FLAURA2</div></div>
+        <div class="ref-line">Reference ITT median PFS: <strong>25.5 months</strong></div>
+        <div class="ratio-row"><div class="ratio-val" id="c-ratio" style="color:var(--tl6)">--</div><div class="ratio-suf">&times; trial median</div></div>
+        <div id="c-interp"></div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:53%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-chm" id="cbar"></div></div>
+        <div class="gain-box">
+            <div class="gain-header">Potential gain vs osimertinib monotherapy</div>
+            <div class="gain-row"><div class="gain-val" id="c-gain">--</div><div class="gain-suf">&times; osi mono expected PFS</div></div>
+            <div id="c-gain-interp"></div>
+        </div>
+        <div class="onote" id="cnote"></div>
+    </div>
+
+    <div class="ocard">
+        <div class="orow"><div class="oname">Amivantamab + Lazertinib</div><div class="ttag">MARIPOSA</div></div>
+        <div class="ref-line">Reference ITT median PFS: <strong>23.7 months</strong></div>
+        <div class="ratio-row"><div class="ratio-val" id="a-ratio" style="color:var(--ind)">--</div><div class="ratio-suf">&times; trial median</div></div>
+        <div id="a-interp"></div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:53%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-ami" id="abar"></div></div>
+        <div class="gain-box">
+            <div class="gain-header">Potential gain vs osimertinib monotherapy</div>
+            <div class="gain-row"><div class="gain-val" id="a-gain">--</div><div class="gain-suf">&times; osi mono expected PFS</div></div>
+            <div id="a-gain-interp"></div>
+        </div>
+        <div class="onote" id="anote"></div>
+    </div>
+
+    <div class="baseline-note">
+        <strong>How to interpret the gain metric:</strong> The ITT-level treatment effect of combination over monotherapy is ~1.35&times; for osi+chemo (25.5/18.9) and ~1.25&times; for amiva+lazer (23.7/18.9). This <em>baseline gain</em> applies to all patients regardless of risk. When the displayed gain <em>exceeds</em> this baseline, it indicates the combination is disproportionately benefiting this risk profile by overcoming adverse prognostic factors. For high-risk patients, gains of 1.5&ndash;1.6&times; suggest combination therapy substantially mitigates their poor-prognosis biology. For favorable-risk patients, gains near the baseline (~1.25&ndash;1.35&times;) suggest the benefit is primarily the general treatment effect, which must be weighed against added toxicity.
+    </div>
+</div>
+<div class="ph" id="outsec-ph">Select prognostic variables above and calculate to see ratio-based outcomes.</div>
+
+<div class="mbox" style="margin-top:16px">
+    <strong>Methodology &mdash; Ratio-Referenced Estimates</strong><br>
+    Efficacy expressed as fold-change (&times;) relative to each trial&rsquo;s ITT median PFS, derived from published subgroup HRs and medians. Ratios &lt;1.0&times; = shorter expected PFS. Correlated factors grouped into <em>Metastatic Burden</em> (brain/liver) and <em>Molecular Risk</em> (TP53, ctDNA) domains to mitigate collinearity. Gain-vs-mono metric shows potential PFS extension from escalating to combination therapy for each risk profile.
+</div>
+</div>
+
+<!-- ===== TAB 2: PFS & OS ABSOLUTE ===== -->
+<div class="tpane on" id="tab-abs">
+<div id="abs-out" style="display:none">
+    <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin:0 0 4px">Estimated PFS &amp; Published OS</div>
+    <p style="font-size:12px;color:var(--s500);margin-bottom:16px">Risk-adjusted PFS estimates for patient discussions. OS data shown as published ITT trial results (not risk-adjusted).</p>
+
+    <div class="mcard mcard-top">
+        <div class="orow"><div class="oname">Osimertinib Monotherapy</div><div class="ttag">FLAURA / FLAURA2 control</div></div>
+        <div class="est-grid">
+            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-o-pfs" style="color:var(--bl6)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-o-range"></div></div>
+            <div class="est-box"><div class="est-label">Published ITT Median OS</div><div class="est-val" style="color:var(--bl6)">37.6</div><div class="est-unit">months</div><div class="est-sub">FLAURA2 control arm<br>Janne, NEJM 2025</div></div>
+        </div>
+        <div class="pfs-bar"><div class="pfs-fill f-osi" id="abs-o-bar"></div></div>
+        <div class="os-line" id="abs-o-note"></div>
+    </div>
+
+    <div class="mcard mcard-top chm">
+        <div class="orow"><div class="oname">Osimertinib + Platinum-Pemetrexed</div><div class="ttag">FLAURA2</div></div>
+        <div class="est-grid">
+            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-c-pfs" style="color:var(--tl6)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-c-range"></div></div>
+            <div class="est-box"><div class="est-label">Published ITT Median OS</div><div class="est-val" style="color:var(--tl6)">47.5</div><div class="est-unit">months</div><div class="est-sub">HR 0.77 (p=0.02) vs osi mono<br>Janne, NEJM 2025</div></div>
+        </div>
+        <div class="pfs-bar"><div class="pfs-fill f-chm" id="abs-c-bar"></div></div>
+        <div class="os-line" id="abs-c-note"></div>
+    </div>
+
+    <div class="mcard mcard-top ami">
+        <div class="orow"><div class="oname">Amivantamab + Lazertinib</div><div class="ttag">MARIPOSA</div></div>
+        <div class="est-grid">
+            <div class="est-box"><div class="est-label">Estimated PFS</div><div class="est-val" id="abs-a-pfs" style="color:var(--ind)">--</div><div class="est-unit">months</div><div class="est-sub" id="abs-a-range"></div></div>
+            <div class="est-box"><div class="est-label">Published OS</div><div class="est-val" style="color:var(--ind);font-size:24px">3-yr: 60%</div><div class="est-unit">vs 51% osi mono</div><div class="est-sub">HR 0.75 (p=0.005)<br>Yang, NEJM 2025</div></div>
+        </div>
+        <div class="pfs-bar"><div class="pfs-fill f-ami" id="abs-a-bar"></div></div>
+        <div class="os-line" id="abs-a-note"></div>
+    </div>
+</div>
+<div class="ph" id="abs-out-ph">Select prognostic variables above and calculate to see PFS &amp; OS estimates.</div>
+
+<div class="limb"><strong>&#9888; Important Caveats for Patient Discussions</strong>PFS estimates are derived from subgroup analyses and reflect population-level associations, not individual predictions. Actual PFS for any individual patient may differ substantially. OS data shown are ITT trial results and are not risk-adjusted (subgroup-specific OS data are limited). Month ranges represent plausible intervals around point estimates, not confidence intervals. Use as a framework for discussion, not as a prognosis.</div>
+</div>
+
+<!-- ===== TAB 3: HAZARD RATIOS ===== -->
+<div class="tpane" id="tab-hr">
+<div class="card"><div class="card-h"><h2>Published PFS Hazard Ratios &mdash; Combination vs Osimertinib</h2><p>Pivotal trial results and key subgroup analyses. HR &lt;1.0 favors combination.</p></div>
+<div class="card-b">
+<table class="hr-tbl"><thead><tr>
+    <th style="width:28%">Population / Subgroup</th>
+    <th>Osi + Chemo vs Osi<br><span style="font-weight:400;font-size:10px">FLAURA2</span></th>
+    <th>Amiva + Lazer vs Osi<br><span style="font-weight:400;font-size:10px">MARIPOSA</span></th>
+</tr></thead>
+<tbody>
+<tr><td>ITT (all patients)</td><td><span class="hr-sig">0.62</span><span class="hr-ci">95% CI: 0.49&ndash;0.79</span></td><td><span class="hr-sig">0.70</span><span class="hr-ci">95% CI: 0.58&ndash;0.85</span></td></tr>
+<tr><td>Exon 19 deletion</td><td><span class="hr-val">0.60</span></td><td><span class="hr-val">0.65</span></td></tr>
+<tr><td>L858R</td><td><span class="hr-val">0.63</span></td><td><span class="hr-val">0.79</span></td></tr>
+<tr><td>Brain mets at baseline</td><td><span class="hr-val">0.47</span><span class="hr-ci">(CNS PFS)</span></td><td><span class="hr-val">0.69</span></td></tr>
+<tr><td>No brain mets</td><td><span class="hr-val">0.68</span></td><td><span class="hr-val">0.70</span></td></tr>
+<tr><td>Liver mets at baseline</td><td><span class="hr-val">~0.60</span></td><td><span class="hr-val">~0.57</span></td></tr>
+<tr><td>TP53 co-mutation</td><td><span class="hr-val">~0.55</span><span class="hr-ci">(limited data)</span></td><td><span class="hr-sig">0.65</span><span class="hr-ci">Felip, Ann Oncol 2024</span></td></tr>
+<tr><td>TP53 wild-type</td><td><span class="hr-val">~0.70</span></td><td><span class="hr-val">~0.75</span></td></tr>
+<tr><td>ctDNA detectable</td><td><span class="hr-val">~0.55</span></td><td><span class="hr-val">~0.60</span></td></tr>
+<tr><td>ctDNA undetectable</td><td><span class="hr-val">~0.80</span></td><td><span class="hr-val">~0.85</span></td></tr>
+</tbody></table>
+</div></div>
+
+<div class="card"><div class="card-h"><h2>Published OS Hazard Ratios</h2><p>Overall survival results from final analyses.</p></div>
+<div class="card-b">
+<table class="hr-tbl"><thead><tr>
+    <th style="width:28%">Endpoint</th>
+    <th>Osi + Chemo vs Osi<br><span style="font-weight:400;font-size:10px">FLAURA2</span></th>
+    <th>Amiva + Lazer vs Osi<br><span style="font-weight:400;font-size:10px">MARIPOSA</span></th>
+</tr></thead>
+<tbody>
+<tr><td>Overall survival (ITT)</td><td><span class="hr-sig">0.77</span><span class="hr-ci">95% CI: 0.61&ndash;0.97</span><span class="hr-p">p = 0.02</span></td><td><span class="hr-sig">0.75</span><span class="hr-ci">95% CI: 0.61&ndash;0.91</span><span class="hr-p">p = 0.005</span></td></tr>
+<tr><td>Median OS &mdash; combination</td><td><span class="hr-val">47.5 months</span></td><td><span class="hr-val">NR at primary; 3-yr OS 60%</span></td></tr>
+<tr><td>Median OS &mdash; osi control</td><td><span class="hr-val">37.6 months</span></td><td><span class="hr-val">3-yr OS 51%</span></td></tr>
+</tbody></table>
+</div></div>
+
+<div id="hr-context" style="display:none">
+<div class="card"><div class="card-h"><h2>HRs in Context for This Risk Profile</h2></div>
+<div class="card-b" id="hr-context-body" style="font-size:13px;color:var(--s600);line-height:1.8"></div></div>
+</div>
+
+<div class="mbox" style="margin-top:0">
+    <strong>Reading This Table</strong><br>
+    HR &lt;1.0 favors combination over osimertinib monotherapy. Smaller HR = larger treatment effect. Green-highlighted values reached statistical significance. Approximate values (~) indicate limited data, post-hoc analyses, or estimated from forest plots. Subgroup HRs should not be compared across trials due to different patient populations, crossover patterns, and analysis methods.
+</div>
+</div>
+
+<!-- ===== TAB 4: TOXICITY ===== -->
+<div class="tpane" id="tab-tox">
+<div class="tov">
+    <div class="tsc tc-o"><div class="rn">Osimertinib</div><div class="src">FLAURA &amp; FLAURA2 mono arm</div><div class="tbig">42%</div><div class="tbla">Grade &ge;3 Adverse Events</div><div class="tmini"><div><span class="v">6%</span> <span class="l">d/c rate</span></div><div><span class="v">~4%</span> <span class="l">ILD</span></div><div><span class="v">Oral</span> <span class="l">daily</span></div></div></div>
+    <div class="tsc tc-c"><div class="rn">Osi + Chemo</div><div class="src">FLAURA2 combination arm</div><div class="tbig">64%</div><div class="tbla">Grade &ge;3 Adverse Events</div><div class="tmini"><div><span class="v">11%</span> <span class="l">d/c osi</span></div><div><span class="v">43%</span> <span class="l">d/c pem</span></div><div><span class="v">IV q3w</span> <span class="l">maint</span></div></div></div>
+    <div class="tsc tc-a"><div class="rn">Amiva + Lazer</div><div class="src">MARIPOSA combination arm</div><div class="tbig">75%</div><div class="tbla">Grade &ge;3 Adverse Events</div><div class="tmini"><div><span class="v">10%</span> <span class="l">d/c all</span></div><div><span class="v">64%</span> <span class="l">dose int</span></div><div><span class="v">IV q2w</span> <span class="l">ongoing</span></div></div></div>
+</div>
+<div class="card"><div class="card-b">
+
+<div class="txsec"><div class="tdh">Hematologic Toxicity</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib<br><span style="font-weight:400;font-size:10px">FLAURA</span></th><th>Osi + Chemo<br><span style="font-weight:400;font-size:10px">FLAURA2</span></th><th>Amiva + Lazer<br><span style="font-weight:400;font-size:10px">MARIPOSA</span></th></tr></thead>
+<tbody>
+<tr><td class="ae">Anemia</td><td><span class="rxb lo">8%</span><span class="g3">Gr3: 1%</span></td><td><span class="rxb ho">48%</span><span class="g3">Gr3: 20%</span></td><td><span class="rxb mo">26%</span><span class="g3">Gr3: low</span></td></tr>
+<tr><td class="ae">Neutropenia</td><td><span class="rxb lo">3%</span><span class="g3">Gr3: 1%</span></td><td><span class="rxb ho">25%</span><span class="g3">Gr3-4: 14%</span></td><td><span class="rxb lo">low</span></td></tr>
+<tr><td class="ae">Thrombocytopenia</td><td><span class="rxb lo">4%</span></td><td><span class="rxb mo">19%</span><span class="g3">Lab Gr3-4: 16%</span></td><td><span class="rxb lo">low</span></td></tr>
+<tr><td class="ae">Febrile neutropenia</td><td><span class="rxb lo">0%</span></td><td><span class="rxb mo">4%</span></td><td><span class="rxb lo">rare</span></td></tr>
+<tr><td class="ae">Leukopenia (lab)</td><td><span class="rxb lo">low</span></td><td><span class="rxb mo">&mdash;</span><span class="g3">Lab Gr3-4: 20%</span></td><td><span class="rxb lo">&mdash;</span></td></tr>
+</tbody></table></div>
+
+<div class="txsec"><div class="tdh">Dermatologic / EGFR On-Target</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
+<tbody>
+<tr><td class="ae">Rash (grouped)</td><td><span class="rxb mo">32%</span><span class="g3">Gr3: &lt;1%</span></td><td><span class="rxb mo">28%</span><span class="g3">Gr3: &lt;1%</span></td><td><span class="rxb ho">64%</span><span class="g3">Gr3: 17%</span></td></tr>
+<tr><td class="ae">Paronychia</td><td><span class="rxb mo">30%</span><span class="g3">Gr3: &lt;1%</span></td><td><span class="rxb mo">27%</span><span class="g3">Gr3: &lt;1%</span></td><td><span class="rxb ho">69%</span><span class="g3">Gr3: 12%</span></td></tr>
+<tr><td class="ae">Acneiform dermatitis</td><td><span class="rxb lo">13%</span></td><td><span class="rxb lo">~10%</span></td><td><span class="rxb mo">30%</span><span class="g3">Gr3: 9%</span></td></tr>
+<tr><td class="ae">Dry skin</td><td><span class="rxb mo">31%</span></td><td><span class="rxb mo">24%</span></td><td><span class="rxb lo">~15%</span></td></tr>
+<tr><td class="ae">Stomatitis</td><td><span class="rxb mo">21%</span></td><td><span class="rxb mo">31%</span></td><td><span class="rxb lo">~15%</span></td></tr>
+</tbody></table></div>
+
+<div class="txsec"><div class="tdh">MET On-Target Toxicity (Amivantamab-Specific)</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
+<tbody>
+<tr><td class="ae">Hypoalbuminemia</td><td><span class="rxb lo">7%</span></td><td><span class="rxb lo">~10%</span></td><td><span class="rxb ho">51%</span></td></tr>
+<tr><td class="ae">Peripheral edema</td><td><span class="rxb lo">7%</span></td><td><span class="rxb lo">~8%</span></td><td><span class="rxb ho">38%</span></td></tr>
+<tr><td class="ae">ALT increase</td><td><span class="rxb lo">15%</span></td><td><span class="rxb lo">~15%</span></td><td><span class="rxb mo">40%</span></td></tr>
+<tr><td class="ae">AST increase</td><td><span class="rxb lo">16%</span></td><td><span class="rxb lo">~15%</span></td><td><span class="rxb mo">33%</span></td></tr>
+</tbody></table></div>
+
+<div class="txsec"><div class="tdh">Vascular / Thromboembolic</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
+<tbody>
+<tr><td class="ae">VTE (any grade)</td><td><span class="rxb lo">~9%</span></td><td><span class="rxb lo">~10%</span></td><td><span class="rxb ho">37%</span><span class="g3">Gr3: 10%</span></td></tr>
+<tr><td class="ae">Pulmonary embolism</td><td><span class="rxb lo">3%</span></td><td><span class="rxb lo">2.2%</span></td><td><span class="rxb mo">9%</span></td></tr>
+</tbody></table>
+<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#9a3412;line-height:1.6">
+<strong>VTE with Amiva+Lazer:</strong> Prophylactic anticoagulation recommended first 4 months. Median onset ~84 days. SC formulation (PALOMA-3) reduced VTE from 37% to ~11%.
+</div></div>
+
+<div class="txsec"><div class="tdh">Pulmonary &amp; Cardiac</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
+<tbody>
+<tr><td class="ae">ILD / Pneumonitis</td><td><span class="rxb lo">~4%</span><span class="g3">Can be fatal</span></td><td><span class="rxb lo">3.3%</span><span class="g3">0.4% fatal</span></td><td><span class="rxb lo">&lt;3%</span></td></tr>
+<tr><td class="ae">QTc prolongation</td><td><span class="rxb lo">reported</span></td><td><span class="rxb lo">1.8%</span></td><td><span class="rxb na">N/A</span></td></tr>
+<tr><td class="ae">LVEF decrease</td><td><span class="rxb lo">5%</span></td><td><span class="rxb mo">9.1%</span></td><td><span class="rxb na">not prominent</span></td></tr>
+</tbody></table></div>
+
+<div class="txsec"><div class="tdh">Infusion &amp; Administration Reactions</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
+<tbody>
+<tr><td class="ae">Infusion-related reaction</td><td><span class="rxb na">N/A (oral)</span></td><td><span class="rxb lo">rare</span></td><td><span class="rxb ho">63%</span><span class="g3">Gr3-4: 6%</span></td></tr>
+</tbody></table>
+<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#3730a3;line-height:1.6">
+<strong>IRR Management:</strong> Mostly first-infusion (median onset 60 min). First dose split over 2 days. SC formulation (PALOMA-3) reduced IRRs 5-fold and admin time to &lt;5 min vs up to 5 hrs IV.
+</div></div>
+
+<div class="txsec"><div class="tdh">Gastrointestinal</div>
+<table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
+<tbody>
+<tr><td class="ae">Diarrhea</td><td><span class="rxb ho">47%</span><span class="g3">Gr3: &lt;1%</span></td><td><span class="rxb ho">43%</span><span class="g3">Gr3: 3%</span></td><td><span class="rxb mo">32%</span></td></tr>
+<tr><td class="ae">Nausea</td><td><span class="rxb lo">10%</span></td><td><span class="rxb ho">43%</span><span class="g3">Gr3: 1%</span></td><td><span class="rxb lo">~15%</span></td></tr>
+<tr><td class="ae">Vomiting</td><td><span class="rxb lo">low</span></td><td><span class="rxb mo">26%</span></td><td><span class="rxb lo">~12%</span></td></tr>
+<tr><td class="ae">Decreased appetite</td><td><span class="rxb lo">~15%</span></td><td><span class="rxb mo">31%</span><span class="g3">Gr3: 3%</span></td><td><span class="rxb lo">~18%</span></td></tr>
+<tr><td class="ae">Constipation</td><td><span class="rxb lo">~15%</span></td><td><span class="rxb mo">29%</span></td><td><span class="rxb mo">31%</span></td></tr>
+</tbody></table></div>
+</div></div>
+<div class="limb"><strong>&#9888; Cross-Trial Comparison Limitations</strong>AE rates from different trials cannot be directly compared due to differences in reporting, follow-up, and grading. Approximate rates (~) reflect variation across data cuts.</div>
+</div>
+
+<!-- ===== TAB 5: TIMING ===== -->
+<div class="tpane" id="tab-tim">
+<div class="card" style="margin-bottom:20px"><div class="card-h"><h2>Toxicity Timing Profile</h2><p>When toxicity peaks and resolves &mdash; critical for setting patient expectations</p></div>
+<div class="card-b">
+    <div class="tmrow"><div class="tmlbl">Osimertinib</div><div class="tmtrk"><div class="tmfill" style="left:0;width:100%;background:linear-gradient(90deg,rgba(59,130,246,.25),rgba(59,130,246,.15))">steady, low-grade</div></div></div>
+    <div class="tmrow"><div class="tmlbl">Osi + Chemo</div><div class="tmtrk"><div class="tmfill" style="left:0;width:25%;background:linear-gradient(90deg,rgba(20,184,166,.7),rgba(20,184,166,.4))">induction</div><div class="tmfill" style="left:25%;width:75%;background:linear-gradient(90deg,rgba(20,184,166,.2),rgba(20,184,166,.08))">pem maint</div></div></div>
+    <div class="tmrow"><div class="tmlbl">Amiva + Lazer</div><div class="tmtrk"><div class="tmfill" style="left:0;width:33%;background:linear-gradient(90deg,rgba(99,102,241,.7),rgba(99,102,241,.4))">peak AEs</div><div class="tmfill" style="left:33%;width:67%;background:linear-gradient(90deg,rgba(99,102,241,.18),rgba(99,102,241,.06))">attenuated</div></div></div>
+    <div class="tmaxis"><span>0 mo</span><span>3 mo</span><span>6 mo</span><span>9 mo</span><span>12 mo</span></div>
+</div></div>
+
+<div class="card" style="margin-bottom:20px"><div class="card-h"><h2>Osimertinib Monotherapy</h2><p>Steady-state, low-intensity toxicity pattern</p></div>
+<div class="card-b" style="font-size:13px;color:var(--s600);line-height:1.8">
+    Toxicity is generally <strong style="color:var(--s800)">continuous and low-grade</strong>. Diarrhea and skin AEs predominate but rarely exceed Grade 2. No marked induction-phase spike. ILD/pneumonitis (~4%) can occur at any time and requires immediate drug interruption. QTc prolongation and LVEF changes require periodic monitoring but are uncommon.<br><br>
+    <strong style="color:var(--s800)">Patient experience:</strong> Most patients tolerate indefinitely with minimal QoL impact. FLAURA PROs showed global health improvement maintained through treatment.
+</div></div>
+
+<div class="card" style="margin-bottom:20px"><div class="card-h"><h2>Osimertinib + Platinum-Pemetrexed</h2><p>Front-loaded hematologic toxicity, attenuated maintenance phase</p></div>
+<div class="card-b" style="font-size:13px;color:var(--s600);line-height:1.8">
+    <strong style="color:var(--s800)">Months 0&ndash;3 (Platinum Induction):</strong> Peak toxicity. Cytopenias (anemia 20% Gr3, neutropenia 14% Gr3-4), nausea (43%), fatigue. G-CSF may be required. Grade 4 events exclusively hematologic.<br><br>
+    <strong style="color:var(--s800)">Months 3+ (Pemetrexed Maintenance):</strong> Grade &ge;3 AE onset reduced ~50%. Residual toxicity primarily pemetrexed (fatigue, cytopenias) + ongoing osimertinib. 43% ultimately discontinue pemetrexed; treatment continues with osi alone.<br><br>
+    <strong style="color:var(--s800)">Patient experience:</strong> QoL global health scores showed greater improvement with osi mono vs combination, though the difference did not meet clinically meaningful deterioration threshold.
+</div></div>
+
+<div class="card"><div class="card-h"><h2>Amivantamab + Lazertinib</h2><p>Early multi-domain toxicity with dose-optimization and stabilization</p></div>
+<div class="card-b" style="font-size:13px;color:var(--s600);line-height:1.8">
+    <strong style="color:var(--s800)">Months 0&ndash;4 (Active Management):</strong> Highest burden. IRRs (63%, mostly first infusion), skin/nail onset (~14 days), VTE (median onset ~84 days), dose titration. Dose interruptions ~64%, reductions ~36% &mdash; expected and did not compromise PFS in exploratory analyses.<br><br>
+    <strong style="color:var(--s800)">Months 4+ (Stabilization):</strong> New-onset AEs decrease substantially. VTE prophylaxis can be discontinued. Skin management becomes routine. Peripheral edema (MET-related) may accumulate but is manageable.<br><br>
+    <strong style="color:var(--s800)">Mitigation:</strong> COCOON prophylactic derm regimen (doxycycline 100 mg BID &times; 12 weeks + skincare) reduced Grade &ge;2 skin AEs from 77% to 39%. SC amivantamab (PALOMA-3) reduced IRRs 5-fold, VTE from 37% to ~11%, admin from 5 hrs to &lt;5 min.
+</div></div>
+</div>
+
+<!-- ===== TAB 6: PRACTICAL ===== -->
+<div class="tpane" id="tab-pra">
+<div class="card" style="margin-bottom:20px"><div class="card-h"><h2>Practical Considerations</h2><p>Administration logistics, monitoring, and management beyond AE rates</p></div>
+<div class="card-b"><div class="pgrid">
+    <div class="pcard" style="border-top:3px solid var(--bl)">
+        <h4>Osimertinib Mono</h4>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Oral once-daily &mdash; no infusions</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Lowest toxicity; best QoL data</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>No VTE prophylaxis needed</div></div>
+        <div class="pitem"><div class="picon ixi">i</div><div>ECG/LVEF monitoring recommended</div></div>
+        <div class="pitem"><div class="picon iw">!</div><div>ILD risk (~4%) &mdash; counsel early reporting</div></div>
+        <div class="pitem"><div class="picon ixi">i</div><div>Median OS: 37.6 months</div></div>
+    </div>
+    <div class="pcard" style="border-top:3px solid var(--tl)">
+        <h4>Osi + Platinum-Pemetrexed</h4>
+        <div class="pitem"><div class="picon iw">!</div><div>IV q3w &times;4 induction, then pem q3w maintenance</div></div>
+        <div class="pitem"><div class="picon iw">!</div><div>CBC each cycle; G-CSF may be needed</div></div>
+        <div class="pitem"><div class="picon iw">!</div><div>Renal monitoring; B12/folate supplementation</div></div>
+        <div class="pitem"><div class="picon ixi">i</div><div>43% discontinue pemetrexed &mdash; continue osi alone</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Familiar chemo workflow</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Strongest OS: 47.5 mo (HR 0.77)</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Strongest CNS benefit (HR 0.47)</div></div>
+    </div>
+    <div class="pcard" style="border-top:3px solid var(--ind)">
+        <h4>Amivantamab + Lazertinib</h4>
+        <div class="pitem"><div class="picon iw">!</div><div>IV amiva weekly&times;4 then q2w (up to 5 hrs); lazer oral daily</div></div>
+        <div class="pitem"><div class="picon iw">!</div><div>VTE prophylaxis first 4 months</div></div>
+        <div class="pitem"><div class="picon iw">!</div><div>Proactive derm management (COCOON regimen)</div></div>
+        <div class="pitem"><div class="picon iw">!</div><div>Dose interruptions ~64%; reductions ~36%</div></div>
+        <div class="pitem"><div class="picon ixi">i</div><div>SC formulation: IRRs 5-fold lower, VTE ~11%</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Chemotherapy-free</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>OS HR 0.75 (p=0.005); 3-yr OS 60%</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>PFS plateau signal at ~42 months</div></div>
+    </div>
+</div></div></div>
+
+<div class="card"><div class="card-h"><h2>Choosing Between Combinations</h2></div>
+<div class="card-b" style="font-size:13px;color:var(--s600);line-height:1.8">
+    <strong style="color:var(--s800)">Favoring Osi + Chemo:</strong> CNS-dominant disease (HR 0.47 intracranial PFS); limited long-term infusion access (chemo is front-loaded); familiarity with chemo workflows; settings without SC amivantamab availability.<br><br>
+    <strong style="color:var(--s800)">Favoring Amiva + Lazer:</strong> Patient preference to avoid chemo/cytopenias; high-risk molecular profile (dual EGFR+MET inhibition); SC amivantamab available; younger patient valuing long-term control (PFS plateau signal); platinum contraindication.<br><br>
+    <strong style="color:var(--s800)">Favoring Osi Mono:</strong> Elderly/frail; QoL priority; comorbidities increasing toxicity risk; limited social support; favorable-risk profile where combo gain is modest relative to added toxicity.<br><br>
+    <em style="color:var(--s400)">No head-to-head trial exists between osi+chemo and amiva+lazer. Cross-trial comparisons are hypothesis-generating only.</em>
+</div></div>
+
+<div class="srcbox">
+    <strong>Data Sources (All Tabs)</strong>
+    <strong class="sl">Osimertinib:</strong> Soria JC et al., NEJM 2018; Ramalingam SS et al., NEJM 2020; TAGRISSO USPI 2024.<br>
+    <strong class="sl">Osi + Chemo:</strong> Planchard D et al., NEJM 2023; Janne PA et al., NEJM 2025 (FLAURA2 final OS); TAGRISSO USPI 2024.<br>
+    <strong class="sl">Amiva + Lazer:</strong> Cho BC et al., NEJM 2024; Yang JC-H et al., NEJM 2025 (MARIPOSA final OS); RYBREVANT USPI 2024.<br>
+    <strong class="sl">SC formulation:</strong> Leighl NB et al., JCO 2024 (PALOMA-3). <strong class="sl">Derm:</strong> COCOON (J Thorac Oncol 2025).<br>
+    <strong class="sl">High-risk subgroups:</strong> Felip E et al., Ann Oncol 2024;35:805-816.
+</div>
+</div>
+
+<p style="text-align:center;font-size:12px;color:var(--s400);margin-top:40px;padding-bottom:20px">Designed by <a href="https://twitter.com/opsbug" target="_blank" style="color:var(--s400);text-decoration:underline">Vik Dhillon</a></p>
+
+</div><!-- end wrap -->
+
+<script>
+function switchTab(id,btn){
+    document.querySelectorAll('.tpane').forEach(function(e){e.classList.remove('on')});
+    document.querySelectorAll('.tabtn').forEach(function(e){e.classList.remove('on')});
+    document.getElementById('tab-'+id).classList.add('on');
+    btn.classList.add('on');
+}
+function gv(n){return document.querySelector('input[name="'+n+'"]:checked').value}
+
+function calc(){
+    var egfr=gv('egfr'),brain=gv('brain')==='yes',liver=gv('liver')==='yes',ctdna=gv('ctdna'),tp53=gv('tp53');
+    var metDom=brain||liver,metSev=liver?'high':(brain?'mod':'none');
+    var molPos=(tp53==='present')||(ctdna==='detectable'),molDom=molPos;
+    var molSev=(tp53==='present'&&ctdna==='detectable')?'high':((tp53==='present'||ctdna==='detectable')?'mod':'none');
+    var dc=(metDom?1:0)+(molDom?1:0);
+    var ex=egfr==='ex19del';
+
+    // Tags
+    var tags=[];
+    tags.push(ex?{t:'Exon 19 deletion',c:'pos'}:{t:'L858R mutation',c:'neg'});
+    if(brain)tags.push({t:'Brain mets',c:'neg'});
+    if(liver)tags.push({t:'Liver mets',c:'neg'});
+    if(!brain&&!liver)tags.push({t:'No visceral mets',c:'pos'});
+    if(tp53==='present')tags.push({t:'TP53 mutant',c:'neg'});
+    else if(tp53==='absent')tags.push({t:'TP53 wild-type',c:'pos'});
+    else tags.push({t:'TP53 unknown',c:'neu'});
+    if(ctdna==='detectable')tags.push({t:'ctDNA detectable',c:'neg'});
+    else if(ctdna==='undetectable')tags.push({t:'ctDNA undetectable',c:'pos'});
+    else tags.push({t:'ctDNA unknown',c:'neu'});
+
+    // Risk classification
+    var rc,bc;
+    if(dc===0&&ctdna==='undetectable'&&tp53!=='present'){rc='FAVORABLE';bc='fav'}
+    else if(dc>=2){rc='HIGH RISK';bc='hi'}
+    else if(dc===1&&(metSev==='high'||molSev==='high')){rc='HIGH RISK';bc='hi'}
+    else{rc='INTERMEDIATE';bc='mid'}
+
+    // Ratios (vs own trial ITT median)
+    // Ref: osi ITT = 18.9 mo; FLAURA2 = 25.5 mo; MARIPOSA = 23.7 mo
+    var oR,cR,aR;
+    if(rc==='FAVORABLE'){
+        oR=ex?1.05:0.95; cR=ex?1.05:0.95; aR=ex?1.05:0.95;
+    } else if(rc==='HIGH RISK'){
+        if(liver){oR=ex?0.60:0.55;cR=ex?0.72:0.67;aR=ex?0.70:0.65}
+        else if(molSev==='high'){oR=ex?0.68:0.62;cR=ex?0.78:0.72;aR=ex?0.75:0.70}
+        else{oR=ex?0.70:0.63;cR=ex?0.80:0.73;aR=ex?0.77:0.70}
+    } else {
+        if(ctdna==='detectable'){oR=ex?0.78:0.72;cR=ex?0.88:0.82;aR=ex?0.85:0.80}
+        else if(brain){oR=ex?0.72:0.65;cR=ex?0.85:0.78;aR=ex?0.82:0.77}
+        else if(tp53==='present'){oR=ex?0.70:0.65;cR=ex?0.82:0.77;aR=ex?0.78:0.73}
+        else{oR=ex?0.85:0.78;cR=ex?0.90:0.85;aR=ex?0.88:0.83}
+    }
+
+    // Absolute PFS (months)
+    var oAbs=oR*18.9, cAbs=cR*25.5, aAbs=aR*23.7;
+    // Ranges: +/- ~1.5 mo for uncertainty
+    var oLo=Math.max(oAbs-1.5,8),oHi=oAbs+1.5;
+    var cLo=Math.max(cAbs-1.5,12),cHi=cAbs+1.5;
+    var aLo=Math.max(aAbs-1.5,11),aHi=aAbs+1.5;
+
+    // Gain vs mono
+    var cGain=cAbs/oAbs, aGain=aAbs/oAbs;
+
+    // Interpretation helpers
+    function interp(r){
+        if(r>=1.0) return{text:'At or above trial median',cls:'ri-fav'};
+        if(r>=0.85) return{text:'Modestly below trial median',cls:'ri-fav'};
+        if(r>=0.70) return{text:'Moderately below trial median',cls:'ri-mod'};
+        return{text:'Substantially below trial median',cls:'ri-poor'};
+    }
+    function gainInterp(g){
+        if(g>=1.5)return{text:'Large gain \u2014 escalation may substantially extend PFS for this profile',cls:'gi-high'};
+        if(g>=1.35)return{text:'Meaningful gain vs monotherapy for this risk profile',cls:'gi-high'};
+        if(g>=1.20)return{text:'Moderate gain vs monotherapy',cls:'gi-mod'};
+        return{text:'Modest gain \u2014 weigh against added toxicity',cls:'gi-low'};
+    }
+    function fmt(r){return '~'+r.toFixed(2)}
+    function fmtM(m){return '~'+Math.round(m)}
+    function fmtR(lo,hi){return '~'+Math.round(lo)+'\u2013'+Math.round(hi)+' months'}
+
+    // === UPDATE RISK BANNER ===
+    var bn=document.getElementById('rbanner');bn.className='rban '+bc;
+    var cc={'fav':'#166534','mid':'#92400e','hi':'#9f1239'};
+    document.getElementById('rcat').textContent=rc;
+    document.getElementById('rcat').style.color=cc[bc];
+    var sub=dc+' risk domain'+(dc!==1?'s':'')+' involved';
+    if(rc==='FAVORABLE')sub='No high-risk domains; favorable biomarkers';
+    document.getElementById('rsub').textContent=sub;
+    document.getElementById('dtags').innerHTML=tags.map(function(t){return '<span class="tag '+t.c+'"><span class="dot"></span>'+t.t+'</span>'}).join('');
+
+    // === UPDATE TAB 1: RATIOS ===
+    document.getElementById('outsec').style.display='block';
+    document.getElementById('outsec-ph').style.display='none';
+    document.getElementById('o-ratio').textContent=fmt(oR);
+    document.getElementById('c-ratio').textContent=fmt(cR);
+    document.getElementById('a-ratio').textContent=fmt(aR);
+    var oi=interp(oR),ci=interp(cR),ai=interp(aR);
+    document.getElementById('o-interp').innerHTML='<span class="ratio-interp '+oi.cls+'">'+oi.text+'</span>';
+    document.getElementById('c-interp').innerHTML='<span class="ratio-interp '+ci.cls+'">'+ci.text+'</span>';
+    document.getElementById('a-interp').innerHTML='<span class="ratio-interp '+ai.cls+'">'+ai.text+'</span>';
+    setTimeout(function(){
+        document.getElementById('obar').style.width=(oR/1.2*67)+'%';
+        document.getElementById('cbar').style.width=(cR/1.2*67)+'%';
+        document.getElementById('abar').style.width=(aR/1.2*67)+'%';
+    },100);
+
+    // Gain vs mono
+    document.getElementById('c-gain').textContent=fmt(cGain);
+    document.getElementById('a-gain').textContent=fmt(aGain);
+    var cgi=gainInterp(cGain),agi=gainInterp(aGain);
+    document.getElementById('c-gain-interp').innerHTML='<span class="gain-interp '+cgi.cls+'">'+cgi.text+'</span>';
+    document.getElementById('a-gain-interp').innerHTML='<span class="gain-interp '+agi.cls+'">'+agi.text+'</span>';
+
+    // Notes
+    var on='ITT median: 18.9 mo.';
+    if(!ex)on+=' L858R: shorter PFS vs Ex19del across trials.';
+    if(liver)on+=' Liver mets subgroup: ~0.58\u00d7 (Felip, Ann Oncol 2024).';
+    if(tp53==='present')on+=' TP53 subgroup: ~0.68\u00d7.';
+    if(ctdna==='detectable')on+=' ctDNA detectable: ~0.78\u00d7.';
+    document.getElementById('onote').textContent=on;
+    var cn='ITT median: 25.5 mo. Final OS: 47.5 vs 37.6 mo (HR 0.77, p=0.02).';
+    if(brain)cn+=' CNS PFS: HR 0.47.';
+    document.getElementById('cnote').textContent=cn;
+    var an='ITT median: 23.7 mo. OS: HR 0.75 (p=0.005); 3-yr OS 60% vs 51%.';
+    if(tp53==='present')an+=' TP53: PFS HR 0.65.';
+    if(liver)an+=' Liver mets: significant PFS benefit.';
+    document.getElementById('anote').textContent=an;
+
+    // === UPDATE TAB 2: ABSOLUTE MONTHS ===
+    document.getElementById('abs-out').style.display='block';
+    document.getElementById('abs-out-ph').style.display='none';
+    document.getElementById('abs-o-pfs').textContent=fmtM(oAbs);
+    document.getElementById('abs-c-pfs').textContent=fmtM(cAbs);
+    document.getElementById('abs-a-pfs').textContent=fmtM(aAbs);
+    document.getElementById('abs-o-range').textContent='Range: '+fmtR(oLo,oHi);
+    document.getElementById('abs-c-range').textContent='Range: '+fmtR(cLo,cHi);
+    document.getElementById('abs-a-range').textContent='Range: '+fmtR(aLo,aHi);
+    // PFS bars (max ~30 mo = 100%)
+    setTimeout(function(){
+        document.getElementById('abs-o-bar').style.width=(oAbs/30*100)+'%';
+        document.getElementById('abs-c-bar').style.width=(cAbs/30*100)+'%';
+        document.getElementById('abs-a-bar').style.width=(aAbs/30*100)+'%';
+        document.getElementById('abs-o-bar').textContent=fmtM(oAbs)+' mo PFS';
+        document.getElementById('abs-c-bar').textContent=fmtM(cAbs)+' mo PFS';
+        document.getElementById('abs-a-bar').textContent=fmtM(aAbs)+' mo PFS';
+    },100);
+    // OS context notes
+    var oOsNote='Published ITT median OS: 37.6 months.';
+    if(rc==='HIGH RISK')oOsNote+=' High-risk features are associated with shorter OS, though subgroup-specific OS data are limited.';
+    else if(rc==='FAVORABLE')oOsNote+=' Favorable biomarkers generally associated with longer OS.';
+    document.getElementById('abs-o-note').textContent=oOsNote;
+    var cOsNote='Published ITT median OS: 47.5 months (HR 0.77 vs osi mono, p=0.02). Represents ~10 month OS gain over monotherapy at ITT level.';
+    if(brain)cOsNote+=' CNS disease: strongest intracranial PFS benefit (HR 0.47) may translate to OS gain.';
+    document.getElementById('abs-c-note').textContent=cOsNote;
+    var aOsNote='Published OS: HR 0.75 (p=0.005) vs osi mono. 3-year OS: 60% vs 51%.';
+    if(tp53==='present')aOsNote+=' TP53 mutant: PFS HR 0.65 suggests substantial benefit in this subgroup.';
+    document.getElementById('abs-a-note').textContent=aOsNote;
+
+    // === UPDATE TAB 3: HR CONTEXT ===
+    var hctx=document.getElementById('hr-context');
+    var hbody=document.getElementById('hr-context-body');
+    hctx.style.display='block';
+    var htxt='<strong style="color:var(--s800)">For this '+rc.toLowerCase()+' profile ('+egfr+(brain?' + brain mets':'')+(liver?' + liver mets':'')+(tp53==='present'?' + TP53':'')+(ctdna==='detectable'?' + ctDNA detectable':'')+'):</strong><br><br>';
+    if(brain)htxt+='Brain mets subgroup PFS HR for osi+chemo: <strong>0.47</strong> (CNS PFS) &mdash; the largest subgroup benefit observed in FLAURA2, suggesting combinations substantially improve intracranial disease control.<br><br>';
+    if(liver)htxt+='Liver mets subgroup: both combinations show substantial PFS benefit (HRs ~0.57&ndash;0.60), suggesting combinations partially overcome the poor prognosis associated with hepatic metastases.<br><br>';
+    if(tp53==='present')htxt+='TP53 co-mutation: amiva+lazer shows PFS HR <strong>0.65</strong> (Felip, Ann Oncol 2024). TP53 mutations drive genomic instability and resistance; dual-pathway inhibition may overcome this biology.<br><br>';
+    if(ctdna==='detectable')htxt+='Detectable ctDNA: both combinations show enhanced benefit (HRs ~0.55&ndash;0.60) in patients with higher tumor burden as reflected by circulating DNA.<br><br>';
+    if(rc==='FAVORABLE')htxt+='Favorable-risk patients: subgroup HRs for combinations tend to be attenuated (closer to 1.0) compared to ITT, suggesting the absolute benefit of escalation is smaller when baseline prognosis is already good.';
+    htxt+='<br><em style="color:var(--s400)">Subgroup HRs are exploratory and may not be powered for statistical significance. Interpret with caution.</em>';
+    hbody.innerHTML=htxt;
+}
+window.onload=function(){calc()};
+</script>
+</body></html>
