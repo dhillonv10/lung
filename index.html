@@ -270,10 +270,10 @@ table.tx tbody tr:last-child td{border-bottom:none}
 
     <div class="ocard">
         <div class="orow"><div class="oname">Osimertinib Monotherapy</div><div class="ttag">FLAURA</div></div>
-        <div class="ref-line">Reference ITT median PFS: <strong>18.9 months</strong></div>
+        <div class="ref-line">Osimertinib anchor: <strong>16.7 months</strong> <span style="color:var(--s400)">(contemporary within-trial control; FLAURA ITT 18.9)</span></div>
         <div class="ratio-row"><div class="ratio-val" id="o-ratio" style="color:var(--bl6)">--</div><div class="ratio-suf">&times; trial median</div></div>
         <div id="o-interp"></div>
-        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:53%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-osi" id="obar"></div></div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:50%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-osi" id="obar"></div></div>
         <div class="onote" id="onote"></div>
     </div>
 
@@ -282,7 +282,7 @@ table.tx tbody tr:last-child td{border-bottom:none}
         <div class="ref-line">Reference ITT median PFS: <strong>25.5 months</strong></div>
         <div class="ratio-row"><div class="ratio-val" id="c-ratio" style="color:var(--tl6)">--</div><div class="ratio-suf">&times; trial median</div></div>
         <div id="c-interp"></div>
-        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:53%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-chm" id="cbar"></div></div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:50%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-chm" id="cbar"></div></div>
         <div class="gain-box">
             <div class="gain-header">Potential gain vs osimertinib monotherapy</div>
             <div class="gain-row"><div class="gain-val" id="c-gain">--</div><div class="gain-suf">&times; osi mono expected PFS</div></div>
@@ -296,7 +296,7 @@ table.tx tbody tr:last-child td{border-bottom:none}
         <div class="ref-line">Reference ITT median PFS: <strong>23.7 months</strong></div>
         <div class="ratio-row"><div class="ratio-val" id="a-ratio" style="color:var(--ind)">--</div><div class="ratio-suf">&times; trial median</div></div>
         <div id="a-interp"></div>
-        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:53%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-ami" id="abar"></div></div>
+        <div class="ratio-bar-wrap"><div class="ratio-bar-ref" style="left:50%"><div class="ratio-bar-ref-label">1.0&times;</div></div><div class="ratio-bar rb-ami" id="abar"></div></div>
         <div class="gain-box">
             <div class="gain-header">Potential gain vs osimertinib monotherapy</div>
             <div class="gain-row"><div class="gain-val" id="a-gain">--</div><div class="gain-suf">&times; osi mono expected PFS</div></div>
@@ -306,14 +306,14 @@ table.tx tbody tr:last-child td{border-bottom:none}
     </div>
 
     <div class="baseline-note">
-        <strong>How to interpret the gain metric:</strong> The ITT-level treatment effect of combination over monotherapy is ~1.35&times; for osi+chemo (25.5/18.9) and ~1.25&times; for amiva+lazer (23.7/18.9). This <em>baseline gain</em> applies to all patients regardless of risk. When the displayed gain <em>exceeds</em> this baseline, it indicates the combination is disproportionately benefiting this risk profile by overcoming adverse prognostic factors. For high-risk patients, gains of 1.5&ndash;1.6&times; suggest combination therapy substantially mitigates their poor-prognosis biology. For favorable-risk patients, gains near the baseline (~1.25&ndash;1.35&times;) suggest the benefit is primarily the general treatment effect, which must be weighed against added toxicity.
+        <strong>How the gain metric is derived:</strong> The gain is the ratio of a regimen&rsquo;s expected PFS to osimertinib&rsquo;s expected PFS in the same risk profile &mdash; approximately the reciprocal of the subgroup hazard ratio under proportional hazards (gain &asymp; 1/HR). At the ITT level, using each trial&rsquo;s own contemporary control arm as the denominator, the combination-over-monotherapy effect is <strong>~1.53&times;</strong> for osi+chemo (25.5/16.7) and <strong>~1.43&times;</strong> for amiva+lazer (23.7/16.6). (The earlier external FLAURA control of 18.9 months understated this baseline, giving only ~1.35&times; and ~1.25&times;.) This <em>baseline gain</em> applies to all patients. When the displayed gain <em>exceeds</em> it, the combination is disproportionately benefiting this profile by overcoming adverse prognostic biology. <strong>Worked example (liver metastases):</strong> osimertinib median ~11.0 months (Felip 2024); amivantamab-lazertinib reaches ~18.2 months within MARIPOSA, so 18.2/11.0 &asymp; 1.65&times;; the FLAURA2 liver-mets HR of ~0.60 implies ~1/0.60 &asymp; 1.67&times; for osi+chemo (a cross-trial estimate, to be read with caution). For favorable-risk patients, gains near the baseline suggest the benefit is primarily the general treatment effect, which must be weighed against the added toxicity.
     </div>
 </div>
 <div class="ph" id="outsec-ph">Select prognostic variables above and calculate to see relative risk profile.</div>
 
 <div class="mbox" style="margin:16px 0 24px">
     <strong>Methodology &mdash; Ratio-Referenced Estimates</strong><br>
-    Efficacy expressed as fold-change (&times;) relative to each trial&rsquo;s ITT median PFS, derived from published subgroup HRs and medians. Ratios &lt;1.0&times; = shorter expected PFS. Correlated factors grouped into <em>Metastatic Burden</em> (brain/liver) and <em>Molecular Risk</em> (<i>TP53</i>, ctDNA) domains to mitigate collinearity. Gain-vs-mono metric shows potential PFS extension from escalating to combination therapy for each risk profile.
+    Efficacy is expressed as fold-change (&times;) relative to each trial&rsquo;s ITT median PFS, derived from published subgroup hazard ratios and medians; ratios &lt;1.0&times; indicate shorter expected PFS. The <strong>gain-versus-monotherapy</strong> metric uses each trial&rsquo;s own contemporary control arm (16.7 mo FLAURA2, 16.6 mo MARIPOSA) as the osimertinib denominator rather than the external FLAURA ITT median (18.9 mo). Correlated factors are grouped into <em>Metastatic Burden</em> (brain and/or liver) and <em>Molecular Risk</em> (<i>TP53</i> and/or detectable ctDNA) domains to mitigate collinearity; severity modifiers within a domain (liver, or dual <i>TP53</i>+ctDNA) can raise a single-domain profile to high risk. <strong>EGFR mutation subtype</strong> (Ex19del vs L858R) is treated as a minor prognostic modifier applied equally across all three regimens &mdash; it shifts absolute PFS estimates but, because no EGFR-by-factor interaction is modeled, leaves the gain-vs-monotherapy ratio unchanged. <strong>Median PFS</strong> is used as the anchor because it is the primary endpoint reported uniformly across FLAURA, FLAURA2 and MARIPOSA and the outcome for which subgroup estimates are consistently available; it does not capture the tail/plateau of the survival curve and is not a perfect surrogate for OS, which is shown alongside.
 </div>
 
 <div id="hr-context" style="display:none">
@@ -332,12 +332,12 @@ table.tx tbody tr:last-child td{border-bottom:none}
 <tr><td>ITT (all patients)</td><td><span class="hr-sig">0.62</span><span class="hr-ci">95% CI: 0.49&ndash;0.79</span></td><td><span class="hr-sig">0.70</span><span class="hr-ci">95% CI: 0.58&ndash;0.85</span></td></tr>
 <tr><td>Exon 19 deletion</td><td><span class="hr-val">0.60</span></td><td><span class="hr-val">0.65</span></td></tr>
 <tr><td>L858R</td><td><span class="hr-val">0.63</span></td><td><span class="hr-val">0.79</span></td></tr>
-<tr><td>Brain mets at baseline</td><td><span class="hr-val">0.47</span><span class="hr-ci">(CNS PFS)</span></td><td><span class="hr-val">0.69</span></td></tr>
+<tr><td>Brain mets at baseline</td><td><span class="hr-val">0.47</span><span class="hr-ci">systemic PFS; CNS PFS 0.58</span></td><td><span class="hr-val">0.69</span><span class="hr-ci">Felip 2024</span></td></tr>
 <tr><td>No brain mets</td><td><span class="hr-val">0.68</span></td><td><span class="hr-val">0.70</span></td></tr>
-<tr><td>Liver mets at baseline</td><td><span class="hr-val">~0.60</span></td><td><span class="hr-val">~0.57</span></td></tr>
+<tr><td>Liver mets at baseline</td><td><span class="hr-val">~0.60</span><span class="hr-ci">limited data</span></td><td><span class="hr-val">0.58</span><span class="hr-ci">Felip 2024</span></td></tr>
 <tr><td><i>TP53</i> comutation</td><td><span class="hr-val">~0.55</span><span class="hr-ci">(limited data)</span></td><td><span class="hr-sig">0.65</span><span class="hr-ci">Felip, Ann Oncol 2024</span></td></tr>
 <tr><td><i>TP53</i> wild-type</td><td><span class="hr-val">~0.70</span></td><td><span class="hr-val">~0.75</span></td></tr>
-<tr><td>ctDNA detectable</td><td><span class="hr-val">~0.55</span></td><td><span class="hr-val">~0.60</span></td></tr>
+<tr><td>ctDNA detectable</td><td><span class="hr-val">~0.60</span><span class="hr-ci">limited data</span></td><td><span class="hr-val">~0.68</span><span class="hr-ci">Felip 2024</span></td></tr>
 <tr><td>ctDNA undetectable</td><td><span class="hr-val">~0.80</span></td><td><span class="hr-val">~0.85</span></td></tr>
 </tbody></table>
 </div></div>
@@ -350,9 +350,9 @@ table.tx tbody tr:last-child td{border-bottom:none}
     <th>Amiva + Lazer vs Osi<br><span style="font-weight:400;font-size:10px">MARIPOSA</span></th>
 </tr></thead>
 <tbody>
-<tr><td>Overall survival (ITT)</td><td><span class="hr-sig">0.77</span><span class="hr-ci">95% CI: 0.61&ndash;0.97</span><span class="hr-p">p = 0.02</span></td><td><span class="hr-sig">0.75</span><span class="hr-ci">95% CI: 0.61&ndash;0.91</span><span class="hr-p">p = 0.005</span></td></tr>
-<tr><td>Median OS &mdash; combination</td><td><span class="hr-val">47.5 months</span></td><td><span class="hr-val">NR at primary; 3-yr OS 60%</span></td></tr>
-<tr><td>Median OS &mdash; osi control</td><td><span class="hr-val">37.6 months</span></td><td><span class="hr-val">3-yr OS 51%</span></td></tr>
+<tr><td>Overall survival (ITT)</td><td><span class="hr-sig">0.77</span><span class="hr-ci">95% CI: 0.61&ndash;0.96</span><span class="hr-p">p = 0.02</span></td><td><span class="hr-sig">0.75</span><span class="hr-ci">95% CI: 0.61&ndash;0.92</span><span class="hr-p">p = 0.005</span></td></tr>
+<tr><td>Median OS &mdash; combination</td><td><span class="hr-val">47.5 months</span></td><td><span class="hr-val">Not reached; 3-yr OS 60%</span></td></tr>
+<tr><td>Median OS &mdash; osi control</td><td><span class="hr-val">37.6 months</span></td><td><span class="hr-val">36.7 months; 3-yr OS 51%</span></td></tr>
 </tbody></table>
 </div></div>
 
@@ -365,14 +365,19 @@ table.tx tbody tr:last-child td{border-bottom:none}
 <!-- ===== TAB 4: TOXICITY ===== -->
 <div class="tpane" id="tab-tox">
 <div class="tov">
-    <div class="tsc tc-o"><div class="rn">Osimertinib</div><div class="src">FLAURA &amp; FLAURA2 mono arm</div><div class="tbig">42%</div><div class="tbla">Grade &ge;3 Adverse Events</div><div class="tmini"><div><span class="v">6%</span> <span class="l">d/c rate</span></div><div><span class="v">~4%</span> <span class="l">ILD</span></div><div><span class="v">Oral</span> <span class="l">daily</span></div></div></div>
-    <div class="tsc tc-c"><div class="rn">Osi + Chemo</div><div class="src">FLAURA2 combination arm</div><div class="tbig">64%</div><div class="tbla">Grade &ge;3 Adverse Events</div><div class="tmini"><div><span class="v">11%</span> <span class="l">d/c osi</span></div><div><span class="v">43%</span> <span class="l">d/c pem</span></div><div><span class="v">IV q3w</span> <span class="l">maint</span></div></div></div>
-    <div class="tsc tc-a"><div class="rn">Amiva + Lazer</div><div class="src">MARIPOSA combination arm</div><div class="tbig">75%</div><div class="tbla">Grade &ge;3 Adverse Events</div><div class="tmini"><div><span class="v">10%</span> <span class="l">d/c all</span></div><div><span class="v">64%</span> <span class="l">dose int</span></div><div><span class="v">IV q2w</span> <span class="l">ongoing</span></div></div></div>
+    <div class="tsc tc-o"><div class="rn">Osimertinib</div><div class="src">FLAURA2 mono arm (final)</div><div class="tbig">34%</div><div class="tbla">Grade &ge;3 AEs (any cause)</div><div class="tmini"><div><span class="v">7%</span> <span class="l">d/c rate</span></div><div><span class="v">~4%</span> <span class="l">ILD</span></div><div><span class="v">Oral</span> <span class="l">daily</span></div></div></div>
+    <div class="tsc tc-c"><div class="rn">Osi + Chemo</div><div class="src">FLAURA2 combo arm (final)</div><div class="tbig">70%</div><div class="tbla">Grade &ge;3 AEs (any cause)</div><div class="tmini"><div><span class="v">12%</span> <span class="l">d/c osi</span></div><div><span class="v">43%</span> <span class="l">d/c pem</span></div><div><span class="v">IV q3w</span> <span class="l">maint</span></div></div></div>
+    <div class="tsc tc-a"><div class="rn">Amiva + Lazer</div><div class="src">MARIPOSA combo arm</div><div class="tbig">75%</div><div class="tbla">Grade &ge;3 TRAEs</div><div class="tmini"><div><span class="v">10%</span> <span class="l">d/c all</span></div><div><span class="v">64%</span> <span class="l">dose int</span></div><div><span class="v">IV q2w</span> <span class="l">ongoing</span></div></div></div>
 </div>
 
+<div class="limb" style="margin-top:0;margin-bottom:16px"><strong>&#9888; These grade &ge;3 rates are not directly comparable</strong>The FLAURA2 figures above are <em>any-cause</em> grade &ge;3 AEs (final analysis); the MARIPOSA figure is <em>treatment-related</em> grade &ge;3 AEs. Definitions, follow-up, and populations differ, and <strong>no head-to-head trial has compared osimertinib-chemotherapy with amivantamab-lazertinib</strong>. These within-trial rates describe each regimen against its own control and should not be read as evidence that one combination is more toxic than the other.</div>
+
 <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:12px;color:#3730a3;line-height:1.7">
-<strong style="display:block;margin-bottom:4px">&#9432; Subcutaneous Amivantamab and the Amiva+Lazer Toxicity Profile</strong>
-The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which used <strong>intravenous</strong> amivantamab. The subcutaneous (SC) formulation, evaluated in PALOMA-3, substantially modifies the toxicity profile of this regimen: infusion-related reactions were reduced approximately 5-fold (from 63% to ~13%), VTE decreased from 37% to ~11%, and administration time was reduced from up to 5 hours to under 5 minutes. Where SC amivantamab is available, the tolerability of the amivantamab-lazertinib regimen is meaningfully improved relative to the IV data presented here. Clinicians should consider local SC availability when weighing regimen selection, as several of the highest-burden AEs associated with this combination are substantially attenuated with the SC formulation. <em>(Leighl NB et al., JCO 2024; PALOMA-3)</em>
+<strong style="display:block;margin-bottom:4px">&#9432; Subcutaneous Amivantamab, Thromboprophylaxis, and the Amiva+Lazer Toxicity Profile</strong>
+The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which used <strong>intravenous (IV)</strong> amivantamab <strong>without routinely mandated thromboprophylaxis</strong>. Two subsequent developments reduce this burden, and they act through different mechanisms:<br><br>
+<strong>(1) Prophylactic anticoagulation.</strong> Direct oral anticoagulant prophylaxis for the first ~4 months is now recommended. In PALOMA-3, 81% of patients received prophylaxis, and VTE occurred in <strong>10% of those who did versus 21% of those who did not</strong>.<br>
+<strong>(2) The subcutaneous (SC) formulation</strong>, compared head-to-head against IV in PALOMA-3 (both arms receiving prophylaxis): infusion-related reactions fell roughly 5-fold (<strong>13% SC vs 66% IV</strong>), VTE was <strong>9% (SC) vs 14% (IV)</strong>, and administration time fell from up to 5 hours to under 5 minutes.<br><br>
+The MARIPOSA VTE rate of 37% therefore reflects IV administration without routine prophylaxis; with prophylactic anticoagulation and/or the SC formulation, VTE is substantially lower. Clinicians should factor local SC availability and anticoagulation practice into regimen selection. <em>(Leighl NB et al., JCO 2024; PALOMA-3)</em>
 </div>
 
 <div class="card"><div class="card-b">
@@ -409,11 +414,11 @@ The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which use
 <div class="txsec"><div class="tdh">Vascular / Thromboembolic</div>
 <table class="tx"><thead><tr><th style="width:26%">Adverse Event</th><th>Osimertinib</th><th>Osi + Chemo</th><th>Amiva + Lazer</th></tr></thead>
 <tbody>
-<tr><td class="ae">VTE (any grade)</td><td><span class="rxb lo">~9%</span></td><td><span class="rxb lo">~10%</span></td><td><span class="rxb ho">37%</span><span class="g3">Gr3: 10%</span></td></tr>
-<tr><td class="ae">Pulmonary embolism</td><td><span class="rxb lo">3%</span></td><td><span class="rxb lo">2.2%</span></td><td><span class="rxb mo">9%</span></td></tr>
+<tr><td class="ae">VTE (any grade)</td><td><span class="rxb lo">~9%</span></td><td><span class="rxb lo">~10%</span></td><td><span class="rxb ho">37%</span><span class="g3">Gr3: 10%; IV, no prophylaxis</span></td></tr>
+<tr><td class="ae">Pulmonary embolism</td><td><span class="rxb lo">3%</span></td><td><span class="rxb lo">2.2%</span></td><td><span class="rxb mo">17%</span><span class="g3">DVT 14% (MARIPOSA)</span></td></tr>
 </tbody></table>
 <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#9a3412;line-height:1.6">
-<strong>VTE with Amiva+Lazer:</strong> Prophylactic anticoagulation recommended first 4 months. Median onset ~84 days. SC formulation (PALOMA-3) reduced VTE from 37% to ~11%.
+<strong>VTE with Amiva+Lazer:</strong> The 37% rate is from MARIPOSA (IV, no routine prophylaxis; median onset ~84 days). Prophylactic anticoagulation is recommended for the first ~4 months &mdash; in PALOMA-3, VTE was 10% with prophylaxis vs 21% without. With the SC formulation plus prophylaxis, VTE was ~9% (PALOMA-3: 9% SC vs 14% IV).
 </div></div>
 
 <div class="txsec"><div class="tdh">Pulmonary &amp; Cardiac</div>
@@ -430,7 +435,7 @@ The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which use
 <tr><td class="ae">Infusion-related reaction</td><td><span class="rxb na">N/A (oral)</span></td><td><span class="rxb lo">rare</span></td><td><span class="rxb ho">63%</span><span class="g3">Gr3-4: 6%</span></td></tr>
 </tbody></table>
 <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:12px;color:#3730a3;line-height:1.6">
-<strong>IRR Management:</strong> Mostly first-infusion (median onset 60 min). First dose split over 2 days. SC formulation (PALOMA-3) reduced IRRs 5-fold and admin time to &lt;5 min vs up to 5 hrs IV.
+<strong>IRR Management:</strong> Mostly first-infusion (median onset ~60 min); first dose split over 2 days. In PALOMA-3 the SC formulation reduced IRRs ~5-fold (<strong>13% SC vs 66% IV</strong>) and administration time to &lt;5 min vs up to 5 hrs IV.
 </div></div>
 
 <div class="txsec"><div class="tdh">Gastrointestinal</div>
@@ -473,7 +478,7 @@ The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which use
 <div class="card-b" style="font-size:13px;color:var(--s600);line-height:1.8">
     <strong style="color:var(--s800)">Months 0&ndash;4 (Active Management):</strong> Highest burden. IRRs (63%, mostly first infusion), skin/nail onset (~14 days), VTE (median onset ~84 days), dose titration. Dose interruptions ~64%, reductions ~36% &mdash; expected and did not compromise PFS in exploratory analyses.<br><br>
     <strong style="color:var(--s800)">Months 4+ (Stabilization):</strong> New-onset AEs decrease substantially. VTE prophylaxis can be discontinued. Skin management becomes routine. Peripheral edema (MET-related) may accumulate but is manageable.<br><br>
-    <strong style="color:var(--s800)">Mitigation:</strong> COCOON prophylactic derm regimen (doxycycline 100 mg BID &times; 12 weeks + skincare) reduced Grade &ge;2 skin AEs from 77% to 39%. SC amivantamab (PALOMA-3) reduced IRRs 5-fold, VTE from 37% to ~11%, admin from 5 hrs to &lt;5 min.
+    <strong style="color:var(--s800)">Mitigation:</strong> The COCOON prophylactic dermatologic regimen reduced Grade &ge;2 skin AEs from 76.5% to 38.6% at week 12 (see the Practical tab for the full protocol). In PALOMA-3, SC amivantamab reduced IRRs ~5-fold (13% vs 66%) and administration time from up to 5 hrs to &lt;5 min; VTE was 9% (SC) vs 14% (IV), both with prophylaxis, versus 37% in MARIPOSA (IV, no routine prophylaxis).
 </div></div>
 </div>
 
@@ -498,7 +503,7 @@ The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which use
         <div class="pitem"><div class="picon ixi">i</div><div>43% discontinue pemetrexed &mdash; continue osi alone</div></div>
         <div class="pitem"><div class="picon ig">&#10003;</div><div>Familiar chemo workflow</div></div>
         <div class="pitem"><div class="picon ig">&#10003;</div><div>Strongest OS: 47.5 mo (HR 0.77)</div></div>
-        <div class="pitem"><div class="picon ig">&#10003;</div><div>Strongest CNS benefit (HR 0.47)</div></div>
+        <div class="pitem"><div class="picon ig">&#10003;</div><div>Strong CNS benefit (systemic PFS HR 0.47; CNS PFS 0.58)</div></div>
     </div>
     <div class="pcard" style="border-top:3px solid var(--ind)">
         <h4>Amivantamab + Lazertinib</h4>
@@ -506,7 +511,7 @@ The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which use
         <div class="pitem"><div class="picon iw">!</div><div>VTE prophylaxis first 4 months</div></div>
         <div class="pitem"><div class="picon iw">!</div><div>Proactive derm management (COCOON regimen)</div></div>
         <div class="pitem"><div class="picon iw">!</div><div>Dose interruptions ~64%; reductions ~36%</div></div>
-        <div class="pitem"><div class="picon ixi">i</div><div>SC formulation: IRRs 5-fold lower, VTE ~11%</div></div>
+        <div class="pitem"><div class="picon ixi">i</div><div>SC formulation: IRRs ~5-fold lower (13% vs 66%); VTE ~9%</div></div>
         <div class="pitem"><div class="picon ig">&#10003;</div><div>Chemotherapy-free</div></div>
         <div class="pitem"><div class="picon ig">&#10003;</div><div>OS HR 0.75 (p=0.005); 3-yr OS 60%</div></div>
         <div class="pitem"><div class="picon ig">&#10003;</div><div>PFS plateau signal at ~42 months</div></div>
@@ -515,11 +520,37 @@ The AE rates shown above for amivantamab-lazertinib are from MARIPOSA, which use
 
 <div class="card"><div class="card-h"><h2>Choosing Between Combinations</h2></div>
 <div class="card-b" style="font-size:13px;color:var(--s600);line-height:1.8">
-    <strong style="color:var(--s800)">Favoring Osi + Chemo:</strong> Patients with brain metastases at baseline (HR 0.47 intracranial PFS); limited long-term infusion access (chemo is front-loaded); familiarity with chemo workflows; settings without SC amivantamab availability.<br><br>
+    <strong style="color:var(--s800)">Favoring Osi + Chemo:</strong> Patients with brain metastases at baseline (systemic PFS HR 0.47; intracranial PFS HR 0.58 in the CNS-mets subgroup); limited long-term infusion access (chemo is front-loaded); familiarity with chemo workflows; settings without SC amivantamab availability.<br><br>
     <strong style="color:var(--s800)">Favoring Amiva + Lazer:</strong> Patient preference to avoid chemo/cytopenias; high-risk molecular profile (dual EGFR+MET inhibition); SC amivantamab available; younger patient valuing long-term control (PFS plateau signal); platinum contraindication.<br><br>
     <strong style="color:var(--s800)">Favoring Osi Mono:</strong> Elderly/frail; QoL priority; comorbidities increasing toxicity risk; limited social support; favorable-risk profile where combo gain is modest relative to added toxicity.<br><br>
     <em style="color:var(--s400)">No head-to-head trial exists between osi+chemo and amiva+lazer. Cross-trial comparisons are hypothesis-generating only.</em>
 </div></div>
+
+<div class="card" style="margin-bottom:20px"><div class="card-h"><h2>COCOON Prophylactic Dermatologic Regimen</h2><p>Full protocol for preventing amivantamab-lazertinib skin toxicity &mdash; begin on day 1</p></div>
+<div class="card-b">
+<div class="pgrid" style="margin-bottom:16px">
+    <div class="pcard" style="border-top:3px solid var(--ind)">
+        <h4>Systemic (Weeks 1&ndash;12)</h4>
+        <div class="pitem"><div class="picon ixi">1</div><div><strong>Oral doxycycline OR minocycline 100 mg twice daily</strong> for the first 12 weeks.</div></div>
+    </div>
+    <div class="pcard" style="border-top:3px solid var(--ind)">
+        <h4>Scalp (from Week 13)</h4>
+        <div class="pitem"><div class="picon ixi">2</div><div><strong>Topical clindamycin 1% lotion</strong> to the scalp nightly, from week 13 through month 12.</div></div>
+    </div>
+    <div class="pcard" style="border-top:3px solid var(--ind)">
+        <h4>Nails &amp; Skin (Months 1&ndash;12)</h4>
+        <div class="pitem"><div class="picon ixi">3</div><div><strong>Chlorhexidine 4%</strong> wash to fingernails/toenails daily &times; 12 months.</div></div>
+        <div class="pitem"><div class="picon ixi">4</div><div><strong>Ceramide-based moisturizer</strong> to face and body daily &times; 12 months.</div></div>
+    </div>
+</div>
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:12px;color:#166534;line-height:1.6">
+<strong>Result (COCOON, J Thorac Oncol 2025):</strong> Grade &ge;2 dermatologic AEs at week 12 fell from <strong>76.5% to 38.6%</strong> (p&lt;0.0001); Grade &ge;3 from 8.8% to 4.3%. Facial/body rash was reduced ~63% and scalp rash ~69%. Thromboprophylaxis is separately recommended for all patients.
+</div>
+</div></div>
+
+<div class="limb"><strong>&#9888; Model Limitations</strong>
+This tool is a <strong>decision-support and risk-stratification framework</strong>, not a validated predictive algorithm or a patient-level nomogram. (1) The variables used are established markers of <em>prognosis</em>; using them to guide treatment <em>intensification</em> assumes they are also <em>predictive</em> of differential benefit &mdash; a hypothesis supported by larger subgroup effects (e.g., <i>TP53</i>-mutant HR 0.65 vs wild-type 0.75; liver 0.58; CNS systemic PFS 0.47) but not confirmed, as these subgroups were not powered for interaction and interaction tests were not significant. (2) The domain grouping and severity hierarchy are transparent heuristics, not empirically rank-ordered against patient-level data; different high-risk combinations that reach the same category are treated equivalently. (3) Established prognostic factors not captured here &mdash; ECOG performance status and weight loss in particular &mdash; are omitted, partly because the pivotal trials enrolled only ECOG PS 0&ndash;1, limiting the source-data range. (4) All subgroup estimates are cross-trial and exploratory; without patient-level data, absolute estimates should be read as population-level associations for discussion, not individual predictions.
+</div>
 
 <div class="srcbox">
     <strong>Data Sources (All Tabs)</strong>
@@ -572,24 +603,31 @@ function calc(){
     else if(dc===1&&(metSev==='high'||molSev==='high')){rc='HIGH RISK';bc='hi'}
     else{rc='INTERMEDIATE';bc='mid'}
 
-    // Ratios (vs own trial ITT median)
-    // Ref: osi ITT = 18.9 mo; FLAURA2 = 25.5 mo; MARIPOSA = 23.7 mo
+    // Expected PFS (months), Exon 19 deletion reference.
+    // Anchors: osimertinib = contemporary within-trial control 16.7 mo (FLAURA2 monotherapy arm;
+    //   MARIPOSA monotherapy arm 16.6 mo, essentially identical); FLAURA2 combo = 25.5 mo; MARIPOSA combo = 23.7 mo.
+    // Subgroup medians from Felip 2024 (osimertinib arm) and FLAURA2/MARIPOSA subgroup analyses.
+    // Ratios below are expressed vs each regimen's own ITT median; absolute months follow from the anchors.
     var oR,cR,aR;
     if(rc==='FAVORABLE'){
-        oR=ex?1.05:0.95; cR=ex?1.05:0.95; aR=ex?1.05:0.95;
+        oR=1.32; cR=1.06; aR=1.10;
     } else if(rc==='HIGH RISK'){
-        if(liver){oR=ex?0.60:0.55;cR=ex?0.72:0.67;aR=ex?0.70:0.65}
-        else if(molSev==='high'){oR=ex?0.68:0.62;cR=ex?0.78:0.72;aR=ex?0.75:0.70}
-        else{oR=ex?0.70:0.63;cR=ex?0.80:0.73;aR=ex?0.77:0.70}
+        if(liver){oR=0.66;cR=0.72;aR=0.77;}
+        else if(molSev==='high'){oR=0.69;cR=0.80;aR=0.76;}
+        else{oR=0.72;cR=0.80;aR=0.77;}
     } else {
-        if(ctdna==='detectable'){oR=ex?0.78:0.72;cR=ex?0.88:0.82;aR=ex?0.85:0.80}
-        else if(brain){oR=ex?0.72:0.65;cR=ex?0.85:0.78;aR=ex?0.82:0.77}
-        else if(tp53==='present'){oR=ex?0.70:0.65;cR=ex?0.82:0.77;aR=ex?0.78:0.73}
-        else{oR=ex?0.85:0.78;cR=ex?0.90:0.85;aR=ex?0.88:0.83}
+        if(ctdna==='detectable'){oR=0.89;cR=0.90;aR=0.86;}
+        else if(brain){oR=0.81;cR=0.98;aR=0.77;}
+        else if(tp53==='present'){oR=0.77;cR=0.84;aR=0.77;}
+        else{oR=0.96;cR=0.94;aR=0.93;}
     }
+    // EGFR subtype: minor prognostic modifier applied equally across all three regimens
+    // (L858R ~10% shorter PFS than Ex19del). No EGFR-by-factor interaction is modeled, so this
+    // shifts absolute PFS and the vs-median ratios but leaves the gain-vs-monotherapy ratio unchanged.
+    if(!ex){oR*=0.90;cR*=0.90;aR*=0.90;}
 
-    // Absolute PFS (months)
-    var oAbs=oR*18.9, cAbs=cR*25.5, aAbs=aR*23.7;
+    // Absolute PFS (months): osimertinib anchored to the contemporary within-trial control (16.7 mo)
+    var oAbs=oR*16.7, cAbs=cR*25.5, aAbs=aR*23.7;
     // Ranges: +/- ~1.5 mo for uncertainty
     var oLo=Math.max(oAbs-1.5,8),oHi=oAbs+1.5;
     var cLo=Math.max(cAbs-1.5,12),cHi=cAbs+1.5;
@@ -606,10 +644,10 @@ function calc(){
         return{text:'Substantially below trial median',cls:'ri-poor'};
     }
     function gainInterp(g){
-        if(g>=1.5)return{text:'Large gain \u2014 escalation may substantially extend PFS for this profile',cls:'gi-high'};
-        if(g>=1.35)return{text:'Meaningful gain vs monotherapy for this risk profile',cls:'gi-high'};
-        if(g>=1.20)return{text:'Moderate gain vs monotherapy',cls:'gi-mod'};
-        return{text:'Modest gain \u2014 weigh against added toxicity',cls:'gi-low'};
+        if(g>=1.60)return{text:'Large relative gain \u2014 escalation may substantially extend PFS for this profile',cls:'gi-high'};
+        if(g>=1.45)return{text:'Meaningful gain vs monotherapy for this risk profile',cls:'gi-high'};
+        if(g>=1.30)return{text:'Moderate gain vs monotherapy',cls:'gi-mod'};
+        return{text:'Modest gain \u2014 near the ITT-level effect; weigh against added toxicity',cls:'gi-low'};
     }
     function fmt(r){return '~'+r.toFixed(2)}
     function fmtM(m){return '~'+Math.round(m)}
@@ -636,9 +674,9 @@ function calc(){
     document.getElementById('c-interp').innerHTML='<span class="ratio-interp '+ci.cls+'">'+ci.text+'</span>';
     document.getElementById('a-interp').innerHTML='<span class="ratio-interp '+ai.cls+'">'+ai.text+'</span>';
     setTimeout(function(){
-        document.getElementById('obar').style.width=(oR/1.2*67)+'%';
-        document.getElementById('cbar').style.width=(cR/1.2*67)+'%';
-        document.getElementById('abar').style.width=(aR/1.2*67)+'%';
+        document.getElementById('obar').style.width=Math.min(oR/1.5*75,98)+'%';
+        document.getElementById('cbar').style.width=Math.min(cR/1.5*75,98)+'%';
+        document.getElementById('abar').style.width=Math.min(aR/1.5*75,98)+'%';
     },100);
 
     // Gain vs mono
@@ -649,19 +687,19 @@ function calc(){
     document.getElementById('a-gain-interp').innerHTML='<span class="gain-interp '+agi.cls+'">'+agi.text+'</span>';
 
     // Notes
-    var on='ITT median: 18.9 mo.';
-    if(!ex)on+=' L858R: shorter PFS vs Ex19del across trials.';
-    if(liver)on+=' Liver mets subgroup: ~0.58\u00d7 (Felip, Ann Oncol 2024).';
-    if(tp53==='present')on+=' <i>TP53</i> subgroup: ~0.68\u00d7.';
-    if(ctdna==='detectable')on+=' ctDNA detectable: ~0.78\u00d7.';
-    document.getElementById('onote').textContent=on;
-    var cn='ITT median: 25.5 mo. Final OS: 47.5 vs 37.6 mo (HR 0.77, p=0.02).';
-    if(brain)cn+=' CNS PFS: HR 0.47.';
-    document.getElementById('cnote').textContent=cn;
-    var an='ITT median: 23.7 mo. OS: HR 0.75 (p=0.005); 3-yr OS 60% vs 51%.';
-    if(tp53==='present')an+=' <i>TP53</i>: PFS HR 0.65.';
-    if(liver)an+=' Liver mets: significant PFS benefit.';
-    document.getElementById('anote').textContent=an;
+    var on='Osimertinib anchor: contemporary within-trial control 16.7 mo (FLAURA2 monotherapy arm; MARIPOSA 16.6 mo). FLAURA ITT was 18.9 mo.';
+    if(!ex)on+=' L858R: ~10% shorter PFS than Ex19del across trials (applied as a minor modifier).';
+    if(liver)on+=' Liver-mets osimertinib median 11.0 mo (Felip, Ann Oncol 2024).';
+    if(tp53==='present')on+=' <i>TP53</i>-mutant osimertinib median 12.9 mo (Felip 2024).';
+    if(ctdna==='detectable')on+=' Detectable-ctDNA osimertinib median 14.8 mo (Felip 2024).';
+    document.getElementById('onote').innerHTML=on;
+    var cn='Osi+chemo ITT median 25.5 mo. Final OS 47.5 vs 37.6 mo (HR 0.77, 95% CI 0.61\u20130.96, p=0.02).';
+    if(brain)cn+=' CNS-mets subgroup: systemic PFS 24.9 vs 13.8 mo (HR 0.47); intracranial (CNS) PFS HR 0.58.';
+    document.getElementById('cnote').innerHTML=cn;
+    var an='Amiva+lazer ITT median 23.7 mo. Final OS: not reached vs 36.7 mo (HR 0.75, 95% CI 0.61\u20130.92, p=0.005); 3-yr OS 60% vs 51%.';
+    if(tp53==='present')an+=' <i>TP53</i>-mutant PFS HR 0.65 (Felip 2024).';
+    if(liver)an+=' Liver-mets PFS HR 0.58 (Felip 2024).';
+    document.getElementById('anote').innerHTML=an;
 
     // === UPDATE TAB 2: ABSOLUTE MONTHS ===
     document.getElementById('abs-out').style.display='block';
@@ -682,28 +720,28 @@ function calc(){
         document.getElementById('abs-a-bar').textContent=fmtM(aAbs)+' mo PFS';
     },100);
     // OS context notes
-    var oOsNote='Published ITT median OS: 37.6 months.';
+    var oOsNote='Published ITT median OS: 37.6 months (FLAURA2 monotherapy arm; MARIPOSA monotherapy arm 36.7 months).';
     if(rc==='HIGH RISK')oOsNote+=' High-risk features are associated with shorter OS, though subgroup-specific OS data are limited.';
-    else if(rc==='FAVORABLE')oOsNote+=' Favorable biomarkers generally associated with longer OS.';
+    else if(rc==='FAVORABLE')oOsNote+=' Favorable biomarkers are generally associated with longer OS.';
     document.getElementById('abs-o-note').textContent=oOsNote;
-    var cOsNote='Published ITT median OS: 47.5 months (HR 0.77 vs osi mono, p=0.02). Represents ~10 month OS gain over monotherapy at ITT level.';
-    if(brain)cOsNote+=' CNS disease: strongest intracranial PFS benefit (HR 0.47) may translate to OS gain.';
+    var cOsNote='Published ITT median OS: 47.5 months (HR 0.77, 95% CI 0.61\u20130.96, p=0.02) \u2014 an ~10-month OS gain over monotherapy at the ITT level.';
+    if(brain)cOsNote+=' CNS-mets subgroup OS 40.9 vs 29.7 mo (HR 0.72); the systemic PFS benefit was largest in this subgroup.';
     document.getElementById('abs-c-note').textContent=cOsNote;
-    var aOsNote='Published OS: HR 0.75 (p=0.005) vs osi mono. 3-year OS: 60% vs 51%.';
-    if(tp53==='present')aOsNote+=' <i>TP53</i> mutant: PFS HR 0.65 suggests substantial benefit in this subgroup.';
-    document.getElementById('abs-a-note').textContent=aOsNote;
+    var aOsNote='Published OS: median not reached vs 36.7 mo for osimertinib (HR 0.75, 95% CI 0.61\u20130.92, p=0.005). 3-year OS: 60% vs 51%.';
+    if(tp53==='present')aOsNote+=' <i>TP53</i>-mutant: PFS HR 0.65 suggests substantial benefit in this subgroup.';
+    document.getElementById('abs-a-note').innerHTML=aOsNote;
 
     // === UPDATE TAB 3: HR CONTEXT ===
     var hctx=document.getElementById('hr-context');
     var hbody=document.getElementById('hr-context-body');
     hctx.style.display='block';
     var htxt='<strong style="color:var(--s800)">For this '+rc.toLowerCase()+' profile ('+egfr+(brain?' + brain mets':'')+(liver?' + liver mets':'')+(tp53==='present'?' + <i>TP53</i>':'')+(ctdna==='detectable'?' + ctDNA detectable':'')+'):</strong><br><br>';
-    if(brain)htxt+='Brain mets subgroup PFS HR for osi+chemo: <strong>0.47</strong> (CNS PFS) &mdash; the largest subgroup benefit observed in FLAURA2, suggesting combinations substantially improve intracranial disease control.<br><br>';
-    if(liver)htxt+='Liver mets subgroup: both combinations show substantial PFS benefit (HRs ~0.57&ndash;0.60), suggesting combinations partially overcome the poor prognosis associated with hepatic metastases.<br><br>';
-    if(tp53==='present')htxt+='<i>TP53</i> comutation: amiva+lazer shows PFS HR <strong>0.65</strong> (Felip, Ann Oncol 2024). <i>TP53</i> mutations drive genomic instability and resistance; dual-pathway inhibition may overcome this biology.<br><br>';
-    if(ctdna==='detectable')htxt+='Detectable ctDNA: both combinations show enhanced benefit (HRs ~0.55&ndash;0.60) in patients with higher tumor burden as reflected by circulating DNA.<br><br>';
-    if(rc==='FAVORABLE')htxt+='Favorable-risk patients: subgroup HRs for combinations tend to be attenuated (closer to 1.0) compared to ITT, suggesting the absolute benefit of escalation is smaller when baseline prognosis is already good.';
-    htxt+='<br><em style="color:var(--s400)">Subgroup HRs are exploratory and may not be powered for statistical significance. Interpret with caution.</em>';
+    if(brain)htxt+='Brain-mets subgroup, osi+chemo: <strong>systemic</strong> PFS HR <strong>0.47</strong> (24.9 vs 13.8 mo) with <strong>intracranial (CNS)</strong> PFS HR <strong>0.58</strong> &mdash; among the largest subgroup benefits in FLAURA2, suggesting combinations substantially improve disease control in patients with baseline CNS involvement.<br><br>';
+    if(liver)htxt+='Liver-mets subgroup: both combinations show substantial PFS benefit (osi+chemo HR ~0.60; amiva+lazer HR 0.58, Felip 2024), partially overcoming the poor prognosis of hepatic metastases (osimertinib median ~11.0 mo).<br><br>';
+    if(tp53==='present')htxt+='<i>TP53</i> comutation: amiva+lazer PFS HR <strong>0.65</strong> vs <i>TP53</i> wild-type HR 0.75 (Felip 2024). <i>TP53</i> mutations drive genomic instability and resistance; dual-pathway inhibition may partially overcome this biology. The subgroup-by-treatment interaction was not formally powered or significant.<br><br>';
+    if(ctdna==='detectable')htxt+='Detectable baseline ctDNA: enhanced benefit (amiva+lazer HR ~0.68, Felip 2024; osimertinib median ~14.8 mo) in patients with higher tumor burden as reflected by circulating tumor DNA.<br><br>';
+    if(rc==='FAVORABLE')htxt+='Favorable-risk patients: subgroup HRs for combinations tend to be attenuated (closer to 1.0) relative to the ITT, so the absolute benefit of escalation is smaller when baseline prognosis is already good.';
+    htxt+='<br><em style="color:var(--s400)">Subgroup HRs are exploratory, were not powered for interaction testing, and should be interpreted with caution.</em>';
     hbody.innerHTML=htxt;
 }
 window.onload=function(){calc()};
